@@ -1,0 +1,176 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+
+const services = [
+  {
+    title: 'SEO Data-Driven',
+    description: 'Optimisation basée sur l\'analyse approfondie des données et des métriques SEO',
+    icon: '📊',
+    href: '/services/seo-data-driven'
+  },
+  {
+    title: 'Audit Technique',
+    description: 'Analyse approfondie de votre site avec nos outils spécialisés',
+    icon: '🔍',
+    href: '/services/audit-technique'
+  },
+  {
+    title: 'Formation',
+    description: 'Montez en compétence sur le SEO data-driven avec nos experts',
+    icon: '📚',
+    href: '/services/formation'
+  }
+];
+
+const methodologie = [
+  {
+    step: 1,
+    title: 'Analyse des données',
+    description: 'Collection et analyse approfondie de vos données SEO'
+  },
+  {
+    step: 2,
+    title: 'Stratégie data-driven',
+    description: 'Élaboration d\'une stratégie basée sur les données'
+  },
+  {
+    step: 3,
+    title: 'Optimisation continue',
+    description: 'Amélioration itérative basée sur les résultats'
+  },
+  {
+    step: 4,
+    title: 'Mesure des résultats',
+    description: 'Suivi précis des KPIs et du ROI'
+  }
+];
+---
+
+<Layout
+  title="Agence SEO Data-Driven | Expertise & Méthodologie"
+  description="Optimisez votre visibilité avec notre approche SEO data-driven. Audit technique, formation et méthodologie basée sur les données."
+>
+  <Header />
+  
+  <main class="pt-20">
+    <!-- Hero Section -->
+    <section class="bg-gradient-to-r from-blue-600 to-blue-800 text-white py-20 md:py-32">
+      <div class="container mx-auto px-4">
+        <div class="max-w-4xl mx-auto text-center">
+          <h1 class="text-4xl md:text-6xl font-bold mb-6">
+            Optimisez votre SEO avec la puissance des données
+          </h1>
+          <p class="text-xl text-blue-100 mb-8">
+            Approche data-driven, méthodologie éprouvée, résultats mesurables
+          </p>
+          <div class="flex flex-col md:flex-row justify-center gap-4">
+            <a
+              href="/audit-gratuit"
+              class="bg-white text-blue-600 px-8 py-4 rounded-lg hover:bg-gray-100"
+            >
+              Audit gratuit
+            </a>
+            <a
+              href="/methodologie"
+              class="bg-transparent text-white px-8 py-4 rounded-lg border-2 border-white hover:bg-white hover:text-blue-600"
+            >
+              Notre approche
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Services Section -->
+    <section class="py-20">
+      <div class="container mx-auto px-4">
+        <h2 class="text-3xl md:text-4xl font-bold text-center mb-16">
+          Nos services SEO data-driven
+        </h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {services.map(service => (
+            <div class="bg-white p-8 rounded-xl shadow-lg hover:shadow-xl transition-shadow">
+              <div class="text-4xl mb-6">{service.icon}</div>
+              <h3 class="text-xl font-bold mb-4">{service.title}</h3>
+              <p class="text-gray-600 mb-6">{service.description}</p>
+              <a
+                href={service.href}
+                class="text-blue-600 hover:text-blue-700 font-medium inline-flex items-center"
+              >
+                En savoir plus
+                <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                </svg>
+              </a>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- Méthodologie Section -->
+    <section class="py-20 bg-gray-50 dark:bg-gray-800">
+      <div class="container mx-auto px-4">
+        <h2 class="text-3xl md:text-4xl font-bold text-center mb-16 dark:text-white">
+          Notre méthodologie data-driven
+        </h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          {methodologie.map(item => (
+            <div class="bg-white dark:bg-gray-700 p-8 rounded-xl shadow-lg relative">
+              <div class="absolute -top-4 -left-4 w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center text-white text-xl font-bold">
+                {item.step}
+              </div>
+              <h3 class="text-xl font-bold mb-4 mt-4 dark:text-white">{item.title}</h3>
+              <p class="text-gray-600 dark:text-gray-300">{item.description}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="py-20">
+      <div class="container mx-auto px-4">
+        <div class="bg-blue-600 text-white rounded-2xl p-8 md:p-16 text-center">
+          <h2 class="text-3xl md:text-4xl font-bold mb-6">
+            Prêt à optimiser votre SEO ?
+          </h2>
+          <p class="text-xl mb-8">
+            Découvrez notre approche unique basée sur les données
+          </p>
+          <a
+            href="/contact"
+            class="bg-white text-blue-600 px-8 py-4 rounded-lg hover:bg-gray-100 inline-block"
+          >
+            Parlons de votre projet
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <Footer />
+</Layout>
+
+<script>
+  // Schema.org
+  const schema = {
+    "@context": "https://schema.org",
+    "@type": "ProfessionalService",
+    "name": "Agence SEO Data-Driven",
+    "description": "Agence SEO spécialisée dans l'approche data-driven",
+    "serviceType": ["SEO", "Data Analysis", "Technical Audit", "Training"],
+    "url": "https://votre-agence.com",
+    "address": {
+      "@type": "PostalAddress",
+      "addressCountry": "FR"
+    }
+  };
+
+  const script = document.createElement('script');
+  script.setAttribute('type', 'application/ld+json');
+  script.textContent = JSON.stringify(schema);
+  document.head.appendChild(script);
+</script> 

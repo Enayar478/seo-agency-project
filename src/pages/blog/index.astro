@@ -1,0 +1,167 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import Header from '../../../components/Header.astro';
+import Footer from '../../../components/Footer.astro';
+import Breadcrumbs from '../../../components/Breadcrumbs.astro';
+import BlogCard from '../../../components/BlogCard.astro';
+
+// Simuler des données de blog (à remplacer par les vraies données de Directus)
+const posts = [
+  {
+    title: 'Guide Complet du SEO Data-Driven',
+    description: 'Découvrez comment utiliser les données pour optimiser votre stratégie SEO et obtenir des résultats mesurables.',
+    image: '/images/blog/seo-data.jpg',
+    category: 'Méthodologie',
+    author: {
+      name: 'Jean Dupont',
+      image: '/images/authors/jean.jpg'
+    },
+    publishDate: '2024-01-15',
+    readingTime: 12,
+    href: '/ressources/blog/guide-seo-data-driven'
+  },
+  {
+    title: 'Analyse Technique SEO avec Python',
+    description: 'Apprenez à automatiser vos analyses SEO techniques avec Python et créez des rapports détaillés.',
+    image: '/images/blog/python-seo.jpg',
+    category: 'Technical SEO',
+    author: {
+      name: 'Marie Martin',
+      image: '/images/authors/marie.jpg'
+    },
+    publishDate: '2024-01-10',
+    readingTime: 15,
+    href: '/ressources/blog/analyse-technique-python'
+  },
+  {
+    title: 'Core Web Vitals : Guide Complet',
+    description: 'Tout ce que vous devez savoir sur les Core Web Vitals et comment les optimiser pour un meilleur référencement.',
+    image: '/images/blog/core-web-vitals.jpg',
+    category: 'Performance',
+    author: {
+      name: 'Pierre Durand',
+      image: '/images/authors/pierre.jpg'
+    },
+    publishDate: '2024-01-05',
+    readingTime: 10,
+    href: '/ressources/blog/guide-core-web-vitals'
+  }
+];
+
+const categories = [
+  'Méthodologie',
+  'Technical SEO',
+  'Performance',
+  'Analytics',
+  'Content SEO',
+  'Data Science'
+];
+---
+
+<Layout
+  title="Blog SEO Data-Driven | Articles et Analyses"
+  description="Découvrez nos articles et analyses sur le SEO data-driven, la performance web et l'optimisation technique."
+>
+  <Header />
+  
+  <main class="pt-20">
+    <div class="bg-gradient-to-r from-blue-600 to-blue-800 text-white py-20">
+      <div class="container mx-auto px-4">
+        <div class="max-w-4xl mx-auto">
+          <Breadcrumbs
+            items={[
+              { label: 'Ressources', href: '/ressources' },
+              { label: 'Blog' }
+            ]}
+            className="mb-6 text-blue-100"
+          />
+          <h1 class="text-4xl md:text-6xl font-bold mb-6">
+            Blog SEO Data-Driven
+          </h1>
+          <p class="text-xl text-blue-100">
+            Articles, analyses et guides pratiques pour maîtriser le SEO basé sur les données
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <section class="py-20">
+      <div class="container mx-auto px-4">
+        <div class="flex flex-col md:flex-row gap-12">
+          <!-- Articles -->
+          <div class="md:w-2/3">
+            <div class="grid gap-8">
+              {posts.map(post => (
+                <BlogCard {...post} />
+              ))}
+            </div>
+          </div>
+
+          <!-- Sidebar -->
+          <div class="md:w-1/3">
+            <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 sticky top-24">
+              <h2 class="text-xl font-bold mb-4 dark:text-white">
+                Catégories
+              </h2>
+              <ul class="space-y-2">
+                {categories.map(category => (
+                  <li>
+                    <a
+                      href={`/ressources/blog/categorie/${category.toLowerCase()}`}
+                      class="text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400"
+                    >
+                      {category}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+
+              <div class="mt-8">
+                <h2 class="text-xl font-bold mb-4 dark:text-white">
+                  Newsletter
+                </h2>
+                <p class="text-gray-600 dark:text-gray-300 mb-4">
+                  Recevez nos derniers articles et analyses SEO
+                </p>
+                <form class="space-y-4">
+                  <input
+                    type="email"
+                    placeholder="Votre email"
+                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                    required
+                  />
+                  <button
+                    type="submit"
+                    class="w-full bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
+                  >
+                    S'abonner
+                  </button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <Footer />
+</Layout>
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Blog",
+    "name": "Blog SEO Data-Driven",
+    "description": "Articles et analyses sur le SEO data-driven",
+    "url": "https://votre-agence.com/ressources/blog",
+    "publisher": {
+      "@type": "Organization",
+      "name": "SEO Data-Driven",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://votre-agence.com/logo.png"
+      }
+    }
+  }
+</script> 

@@ -1,0 +1,32 @@
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://votre-agence.com/sitemap-index.xml
+
+# Ressources à ne pas crawler
+Disallow: /api/
+Disallow: /admin/
+Disallow: /cdn-cgi/
+Disallow: /wp-admin/
+Disallow: /wp-includes/
+
+# Paramètres à ignorer
+Disallow: /*?s=
+Disallow: /*?p=
+Disallow: /*&p=
+Disallow: /*?preview=
+Disallow: /*&preview=
+Disallow: /*?filter=
+Disallow: /*&filter=
+
+# Clean parameters
+Allow: /*.js$
+Allow: /*.css$
+Allow: /*.png$
+Allow: /*.jpg$
+Allow: /*.gif$
+Allow: /*.svg$
+Allow: /*.ico$
+Allow: /*.woff$
+Allow: /*.woff2$ 

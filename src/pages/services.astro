@@ -1,0 +1,133 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+
+const services = [
+  {
+    title: 'SEO Data-Driven',
+    description: 'Une approche du référencement naturel basée sur l\'analyse approfondie des données pour des résultats mesurables et optimaux.',
+    features: [
+      'Analyse des données de recherche',
+      'Optimisation basée sur les métriques',
+      'Suivi des KPIs en temps réel',
+      'Rapports détaillés mensuels'
+    ],
+    icon: '📊',
+    href: '/services/seo-data-driven'
+  },
+  {
+    title: 'Audit Technique',
+    description: 'Un examen complet de votre site web pour identifier et corriger les problèmes techniques impactant votre référencement.',
+    features: [
+      'Analyse de la structure du site',
+      'Vérification des balises techniques',
+      'Test de performance et vitesse',
+      'Recommandations détaillées'
+    ],
+    icon: '🔍',
+    href: '/services/audit-technique'
+  },
+  {
+    title: 'Formation SEO',
+    description: 'Des formations personnalisées pour vous et vos équipes afin de maîtriser les techniques du SEO moderne.',
+    features: [
+      'Formations sur mesure',
+      'Ateliers pratiques',
+      'Support continu',
+      'Certification à la clé'
+    ],
+    icon: '📚',
+    href: '/services/formation'
+  }
+];
+---
+
+<Layout
+  title="Nos Services SEO Data-Driven | Expertise & Solutions"
+  description="Découvrez nos services SEO basés sur les données : audit technique, optimisation data-driven et formations personnalisées pour améliorer votre visibilité en ligne."
+>
+  <Header />
+  
+  <main class="pt-20">
+    <!-- Hero Section -->
+    <section class="bg-gradient-to-r from-blue-600 to-blue-800 text-white py-20">
+      <div class="container mx-auto px-4">
+        <div class="max-w-4xl mx-auto text-center">
+          <h1 class="text-4xl md:text-5xl font-bold mb-6">
+            Nos Services SEO Data-Driven
+          </h1>
+          <p class="text-xl text-blue-100">
+            Des solutions sur mesure pour optimiser votre présence en ligne
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Services Section -->
+    <section class="py-20">
+      <div class="container mx-auto px-4">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
+          {services.map(service => (
+            <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-8 hover:shadow-xl transition-shadow">
+              <div class="text-4xl mb-6">{service.icon}</div>
+              <h2 class="text-2xl font-bold mb-4 dark:text-white">{service.title}</h2>
+              <p class="text-gray-600 dark:text-gray-300 mb-6">
+                {service.description}
+              </p>
+              <ul class="space-y-3 mb-8">
+                {service.features.map(feature => (
+                  <li class="flex items-center text-gray-600 dark:text-gray-300">
+                    <svg class="w-5 h-5 text-blue-600 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                    </svg>
+                    {feature}
+                  </li>
+                ))}
+              </ul>
+              <a
+                href={service.href}
+                class="inline-flex items-center text-blue-600 hover:text-blue-700 font-medium"
+              >
+                En savoir plus
+                <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                </svg>
+              </a>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="py-20 bg-gray-50 dark:bg-gray-900">
+      <div class="container mx-auto px-4">
+        <div class="max-w-4xl mx-auto text-center">
+          <h2 class="text-3xl md:text-4xl font-bold mb-6 dark:text-white">
+            Prêt à améliorer votre visibilité en ligne ?
+          </h2>
+          <p class="text-xl text-gray-600 dark:text-gray-300 mb-8">
+            Contactez-nous pour discuter de votre projet et obtenir un audit gratuit
+          </p>
+          <div class="flex flex-col sm:flex-row justify-center gap-4">
+            <a
+              href="/contact"
+              class="bg-blue-600 text-white px-8 py-4 rounded-lg hover:bg-blue-700 transition-colors"
+            >
+              Nous contacter
+            </a>
+            <a
+              href="/audit-gratuit"
+              class="bg-white text-blue-600 px-8 py-4 rounded-lg border-2 border-blue-600 hover:bg-blue-50 transition-colors dark:bg-gray-800 dark:border-blue-500 dark:text-blue-500 dark:hover:bg-gray-700"
+            >
+              Audit gratuit
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <Footer />
+</Layout> 

@@ -1,0 +1,190 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+
+const steps = [
+  {
+    number: '01',
+    title: 'Analyse des données',
+    description: 'Nous commençons par une analyse approfondie de vos données SEO actuelles, de votre marché et de vos concurrents.',
+    details: [
+      'Audit technique complet',
+      'Analyse de la concurrence',
+      'Étude des mots-clés',
+      'Analyse du comportement utilisateur'
+    ]
+  },
+  {
+    number: '02',
+    title: 'Stratégie data-driven',
+    description: 'Nous élaborons une stratégie basée sur les données collectées, avec des objectifs mesurables.',
+    details: [
+      'Définition des KPIs',
+      'Plan d\'action détaillé',
+      'Priorisation des actions',
+      'Calendrier d\'exécution'
+    ]
+  },
+  {
+    number: '03',
+    title: 'Optimisation continue',
+    description: 'Nous mettons en place les optimisations et les ajustons en fonction des résultats obtenus.',
+    details: [
+      'Optimisations techniques',
+      'Création de contenu',
+      'Amélioration UX',
+      'Suivi des performances'
+    ]
+  },
+  {
+    number: '04',
+    title: 'Mesure des résultats',
+    description: 'Nous mesurons et analysons les résultats pour affiner notre stratégie et maximiser le ROI.',
+    details: [
+      'Rapports détaillés',
+      'Analyse des KPIs',
+      'Ajustements stratégiques',
+      'Recommandations d\'amélioration'
+    ]
+  }
+];
+
+const benefits = [
+  {
+    title: 'Décisions basées sur les données',
+    description: 'Chaque action est justifiée par des données concrètes, pas des suppositions.',
+    icon: '📊'
+  },
+  {
+    title: 'Optimisation continue',
+    description: 'Amélioration constante basée sur l\'analyse des résultats.',
+    icon: '📈'
+  },
+  {
+    title: 'ROI mesurable',
+    description: 'Suivi précis du retour sur investissement de chaque action.',
+    icon: '💰'
+  },
+  {
+    title: 'Transparence totale',
+    description: 'Accès complet aux données et aux rapports d\'analyse.',
+    icon: '🔍'
+  }
+];
+---
+
+<Layout
+  title="Notre Méthodologie SEO Data-Driven | Approche & Process"
+  description="Découvrez notre méthodologie SEO basée sur les données : analyse, stratégie, optimisation et mesure des résultats pour une performance maximale."
+>
+  <Header />
+  
+  <main class="pt-20">
+    <!-- Hero Section -->
+    <section class="bg-gradient-to-r from-blue-600 to-blue-800 text-white py-20">
+      <div class="container mx-auto px-4">
+        <div class="max-w-4xl mx-auto text-center">
+          <h1 class="text-4xl md:text-5xl font-bold mb-6">
+            Notre Méthodologie SEO Data-Driven
+          </h1>
+          <p class="text-xl text-blue-100">
+            Une approche scientifique du référencement naturel basée sur l'analyse des données
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Process Section -->
+    <section class="py-20">
+      <div class="container mx-auto px-4">
+        <div class="max-w-6xl mx-auto">
+          {steps.map((step, index) => (
+            <div class:list={[
+              "flex flex-col md:flex-row items-start gap-8 mb-16",
+              { "md:flex-row-reverse": index % 2 === 1 }
+            ]}>
+              <div class="w-full md:w-1/2">
+                <div class="bg-blue-600 text-white text-4xl font-bold w-16 h-16 rounded-full flex items-center justify-center mb-6">
+                  {step.number}
+                </div>
+                <h2 class="text-3xl font-bold mb-4 dark:text-white">{step.title}</h2>
+                <p class="text-gray-600 dark:text-gray-300 mb-6">{step.description}</p>
+                <ul class="space-y-3">
+                  {step.details.map(detail => (
+                    <li class="flex items-center text-gray-600 dark:text-gray-300">
+                      <svg class="w-5 h-5 text-blue-600 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                      </svg>
+                      {detail}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <div class="w-full md:w-1/2 bg-gray-100 dark:bg-gray-800 rounded-xl p-8">
+                <img
+                  src={`/images/methodology-step-${index + 1}.svg`}
+                  alt={step.title}
+                  class="w-full h-auto"
+                />
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- Benefits Section -->
+    <section class="py-20 bg-gray-50 dark:bg-gray-900">
+      <div class="container mx-auto px-4">
+        <div class="max-w-4xl mx-auto text-center mb-16">
+          <h2 class="text-3xl md:text-4xl font-bold mb-6 dark:text-white">
+            Les avantages de notre approche
+          </h2>
+          <p class="text-xl text-gray-600 dark:text-gray-300">
+            Une méthodologie éprouvée qui garantit des résultats mesurables
+          </p>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-6xl mx-auto">
+          {benefits.map(benefit => (
+            <div class="bg-white dark:bg-gray-800 p-8 rounded-xl shadow-lg text-center">
+              <div class="text-4xl mb-4">{benefit.icon}</div>
+              <h3 class="text-xl font-bold mb-4 dark:text-white">{benefit.title}</h3>
+              <p class="text-gray-600 dark:text-gray-300">{benefit.description}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="py-20">
+      <div class="container mx-auto px-4">
+        <div class="max-w-4xl mx-auto text-center">
+          <h2 class="text-3xl md:text-4xl font-bold mb-6 dark:text-white">
+            Prêt à optimiser votre SEO avec les données ?
+          </h2>
+          <p class="text-xl text-gray-600 dark:text-gray-300 mb-8">
+            Découvrez comment notre approche data-driven peut améliorer votre visibilité en ligne
+          </p>
+          <div class="flex flex-col sm:flex-row justify-center gap-4">
+            <a
+              href="/contact"
+              class="bg-blue-600 text-white px-8 py-4 rounded-lg hover:bg-blue-700 transition-colors"
+            >
+              Parlons de votre projet
+            </a>
+            <a
+              href="/services"
+              class="bg-white text-blue-600 px-8 py-4 rounded-lg border-2 border-blue-600 hover:bg-blue-50 transition-colors dark:bg-gray-800 dark:border-blue-500 dark:text-blue-500 dark:hover:bg-gray-700"
+            >
+              Voir nos services
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <Footer />
+</Layout> 
