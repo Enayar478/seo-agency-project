@@ -45,12 +45,18 @@ interface Article {
   status: 'published' | 'draft';
 }
 
-const directus = createDirectus<DirectusSchema>(import.meta.env.PUBLIC_DIRECTUS_URL)
+// S'assurer que l'URL est valide
+const directusUrl = import.meta.env.PUBLIC_DIRECTUS_URL || 'http://localhost:8055';
+
+const directus = createDirectus<DirectusSchema>(directusUrl)
   .with(authentication())
   .with(rest());
 
 // Configure l'authentification statique après l'initialisation
-directus.setToken(import.meta.env.PUBLIC_DIRECTUS_TOKEN);
+const token = import.meta.env.PUBLIC_DIRECTUS_TOKEN || '';
+if (token) {
+  directus.setToken(token);
+}
 
 const TIMEOUT = 10000; // 10 secondes
 const MAX_RETRIES = 3;
