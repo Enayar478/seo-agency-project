@@ -3,11 +3,15 @@ interface Props {
   items: {
     label: string;
     href?: string;
+    current?: boolean;
   }[];
   className?: string;
 }
 
 const { items, className = '' } = Astro.props;
+
+// Assurez-vous que les URLs sont valides
+const baseUrl = Astro.site ? Astro.site.href : 'http://localhost:4321';
 ---
 
 <nav aria-label="Breadcrumb" class={`text-sm ${className}`}>
@@ -24,15 +28,15 @@ const { items, className = '' } = Astro.props;
               <path d="M285.476 272.971L91.132 467.314c-9.373 9.373-24.569 9.373-33.941 0l-22.667-22.667c-9.357-9.357-9.375-24.522-.04-33.901L188.505 256 34.484 101.255c-9.335-9.379-9.317-24.544.04-33.901l22.667-22.667c9.373-9.373 24.569-9.373 33.941 0L285.475 239.03c9.373 9.372 9.373 24.568.001 33.941z" />
             </svg>
           )}
-          {item.href ? (
+          {item.href && !item.current ? (
             <a
               href={item.href}
-              class="text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400"
+              class="text-inherit hover:text-blue-600 dark:hover:text-blue-400"
             >
               {item.label}
             </a>
           ) : (
-            <span class="text-gray-800 dark:text-gray-100 font-medium">
+            <span class={`${item.current ? 'font-medium' : ''}`}>
               {item.label}
             </span>
           )}
@@ -42,7 +46,7 @@ const { items, className = '' } = Astro.props;
   </ol>
 </nav>
 
-<script define:vars={{ items }}>
+<script define:vars={{ items, baseUrl }}>
   // Schema.org breadcrumbs
   const schema = {
     '@context': 'https://schema.org',
@@ -51,7 +55,7 @@ const { items, className = '' } = Astro.props;
       '@type': 'ListItem',
       'position': index + 1,
       'item': {
-        '@id': item.href || Astro.url.pathname,
+        '@id': item.href ? new URL(item.href, baseUrl).href : baseUrl,
         'name': item.label
       }
     }))
