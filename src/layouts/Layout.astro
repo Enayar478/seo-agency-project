@@ -1,5 +1,6 @@
 ---
 import { ViewTransitions } from 'astro:transitions';
+import { SpeedInsights } from "@vercel/speed-insights/astro";
 
 interface Props {
   title: string;
@@ -57,6 +58,7 @@ const fullUrl = new URL(currentPath, siteUrl).href;
   </head>
   <body class="min-h-screen bg-white dark:bg-gray-900">
     <slot />
+    <SpeedInsights />
     
     <script>
       // PWA registration
