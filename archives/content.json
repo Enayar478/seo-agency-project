@@ -1,7 +1,9 @@
 {
-    "categorie": "MÉTHODOLOGIE DATA SEO",
-    "ordre": 2,
-    "topics": {
+    "sections": [
+    {
+        "categorie": "MÉTHODOLOGIE DATA SEO",
+        "ordre": 2,
+        "topics": {
         "methodologie": {
             "titre": "Méthodologie SEO Data-Driven",
             "mot_cle_principal": "methodologie seo data driven",
@@ -105,7 +107,7 @@
             ]
         }
         }
-    }
+    },
     {
         "categorie": "ANALYTICS & TRACKING",
         "ordre": 3,
@@ -242,7 +244,7 @@
             ]
         }
         }
-    }
+    },
     {
         "categorie": "DONNÉES TECHNIQUES",
         "ordre": 4,
@@ -379,7 +381,7 @@
             ]
         }
         }
-    }
+    },
     {
         "categorie": "DATA SCIENCE POUR SEO",
         "ordre": 5,
@@ -503,7 +505,7 @@
             ]
         }
         }
-    }
+    },
     {
         "categorie": "VISUALISATION & REPORTING",
         "ordre": 6,
@@ -597,7 +599,7 @@
             ]
         }
         }
-    }
+    },
     {
         "categorie": "KEYWORD RESEARCH DATA-DRIVEN",
         "ordre": 7,
@@ -706,7 +708,7 @@
             ]
         }
         }
-    }
+    },
     {
         "categorie": "CONTENT OPTIMIZATION",
         "ordre": 8,
@@ -798,7 +800,7 @@
             ]
         }
         }
-    }
+    },
     {
         "categorie": "TECHNICAL SEO ANALYSIS",
         "ordre": 9,
@@ -906,7 +908,7 @@
             ]
         }
         }
-    }
+    },
     {
         "categorie": "LINK BUILDING ANALYTICS",
         "ordre": 10,
@@ -999,7 +1001,7 @@
             ]
         }
         }
-    }
+    },
     {
         "categorie": "PERFORMANCE & ROI",
         "ordre": 11,
@@ -1107,7 +1109,7 @@
             ]
         }
         }
-    }
+    },
     {
         "categorie": "COMPETITIVE ANALYSIS",
         "ordre": 12,
@@ -1200,7 +1202,7 @@
             ]
         }
         }
-    }
+    },
     {
         "categorie": "E-COMMERCE SEO",
         "ordre": 13,
@@ -1323,7 +1325,7 @@
             ]
         }
         }
-    }
+    },
     {
         "categorie": "B2B SEO",
         "ordre": 14,
@@ -1431,7 +1433,7 @@
             ]
         }
         }
-    }
+    },
     {
         "categorie": "AI & FUTUR DU SEO",
         "ordre": 15,
@@ -1539,7 +1541,7 @@
             ]
         }
         }
-    }
+    },
     {
         "categorie": "INTERNATIONAL SEO",
         "ordre": 16,
@@ -1647,7 +1649,7 @@
             ]
         }
         }
-    }
+    },
     {
         "categorie": "CASE STUDIES",
         "ordre": 17,
@@ -1755,7 +1757,7 @@
             ]
         }
         }
-    }
+    },
     {
         "categorie": "DOCUMENTATION & PROCESS",
         "ordre": 18,
@@ -1864,3 +1866,5 @@
         }
         }
     }
+]
+}

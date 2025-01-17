@@ -16,9 +16,28 @@ pnpm-debug.log*
 # environment variables
 .env
 .env.production
+.env.local
 
 # macOS-specific files
 .DS_Store
 
 # jetbrains setting folder
 .idea/
+
+# Database files
+database/data.db
+database/*.db
+database/*.sqlite
+database/*.sqlite3
+
+# Backup files
+*.bak
+*.backup
+*.swp
+
+# Logs additionnels
+logs/
+*.log
+
+# Cache
+.cache/

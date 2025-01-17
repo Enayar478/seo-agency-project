@@ -1,0 +1,202 @@
+{
+  "meta": {
+    "version": "1.0",
+    "last_updated": "2025-01-17"
+  },
+  "sections": [
+    {
+      "categorie": "MÉTHODOLOGIE DATA SEO",
+      "ordre": 2,
+      "topics": {
+        "methodologie": {
+          "titre": "Méthodologie SEO Data-Driven",
+          "mot_cle_principal": "methodologie seo data driven",
+          "mots_cles_secondaires": [
+            "framework seo data",
+            "process seo data",
+            "analyse seo data"
+          ],
+          "url": "/methodologie-seo-data",
+          "meta_title": "Méthodologie SEO Data-Driven : Framework Complet | [Marque]",
+          "meta_description": "Maîtrisez la méthodologie SEO data-driven. Framework complet, processus d'analyse et méthodes de validation pour une stratégie SEO basée sur les données.",
+          "priorite": "P1",
+          "sous_topics": [
+            {
+              "titre": "Framework data-driven SEO",
+              "url": "/methodologie-seo-data/framework",
+              "mot_cle": "framework seo data driven",
+              "h1": "Framework SEO Data-Driven : Guide Complet",
+              "h2s": [
+                "Structure du framework",
+                "Composants essentiels",
+                "Mise en place du framework",
+                "Mesure de l'efficacité"
+              ],
+              "type_contenu": "framework",
+              "word_count": 2500,
+              "temps_lecture": 13
+            },
+            {
+              "titre": "Processus d'analyse et de décision",
+              "url": "/methodologie-seo-data/processus-analyse",
+              "mot_cle": "processus analyse seo data",
+              "h1": "Processus d'Analyse et de Décision en SEO Data-Driven",
+              "h2s": [
+                "Collecte des données",
+                "Analyse et interprétation",
+                "Prise de décision",
+                "Implémentation et suivi"
+              ],
+              "type_contenu": "process",
+              "word_count": 2200,
+              "temps_lecture": 11
+            },
+            {
+              "titre": "Test & Learn en SEO",
+              "url": "/methodologie-seo-data/test-learn",
+              "mot_cle": "test learn seo data",
+              "h1": "Méthodologie Test & Learn pour le SEO Data-Driven",
+              "h2s": [
+                "Principes du Test & Learn",
+                "Mise en place des tests",
+                "Analyse des résultats",
+                "Itération et amélioration"
+              ],
+              "type_contenu": "methodologie",
+              "word_count": 2000,
+              "temps_lecture": 10
+            },
+            {
+              "titre": "Méthodes de collecte de données",
+              "url": "/methodologie-seo-data/collecte-donnees",
+              "mot_cle": "collecte donnees seo",
+              "h1": "Méthodes de Collecte de Données SEO",
+              "h2s": [
+                "Sources de données SEO",
+                "Outils de collecte",
+                "Organisation des données",
+                "Qualité des données"
+              ],
+              "type_contenu": "guide",
+              "word_count": 2300,
+              "temps_lecture": 12
+            },
+            {
+              "titre": "Validation des hypothèses SEO",
+              "url": "/methodologie-seo-data/validation-hypotheses",
+              "mot_cle": "validation hypotheses seo",
+              "h1": "Comment Valider ses Hypothèses en SEO Data-Driven",
+              "h2s": [
+                "Formulation d'hypothèses",
+                "Méthodes de validation",
+                "Analyse des résultats",
+                "Prise de décision"
+              ],
+              "type_contenu": "methodologie",
+              "word_count": 2100,
+              "temps_lecture": 11
+            },
+            {
+              "titre": "Méthodologie DMAIC appliquée au SEO",
+              "url": "/methodologie-seo-data/dmaic",
+              "mot_cle": "dmaic seo methodologie",
+              "h1": "DMAIC : Application au SEO Data-Driven",
+              "h2s": [
+                "Define (Définir)",
+                "Measure (Mesurer)",
+                "Analyze (Analyser)",
+                "Improve (Améliorer)",
+                "Control (Contrôler)"
+              ],
+              "type_contenu": "methodologie",
+              "word_count": 2400,
+              "temps_lecture": 12
+            }
+          ]
+        }
+      }
+    },
+    {
+      "categorie": "ANALYTICS & TRACKING",
+      "ordre": 3,
+      "topics": {
+        "analytics": {
+          "titre": "Analytics & Tracking",
+          "mot_cle_principal": "analytics tracking",
+          "mots_cles_secondaires": [
+            "analytics",
+            "tracking",
+            "web analytics",
+            "data analytics"
+          ],
+          "url": "/analytics-tracking",
+          "meta_title": "Analytics & Tracking : Optimisation des Performances | [Marque]",
+          "meta_description": "Optimisez les performances de votre site web grâce à l'analyse des données et au tracking. Découvrez les meilleures pratiques pour améliorer votre stratégie marketing.",
+          "priorite": "P2",
+          "sous_topics": [
+            {
+              "titre": "Analytics",
+              "url": "/analytics-tracking/analytics",
+              "mot_cle": "analytics",
+              "h1": "Analytics : Optimisation des Performances",
+              "h2s": [
+                "Définition d'Analytics",
+                "Outils d'Analytics",
+                "Analyse des Données",
+                "Reporting et Analyse"
+              ],
+              "type_contenu": "methodologie",
+              "word_count": 2000,
+              "temps_lecture": 10
+            },
+            {
+              "titre": "Tracking",
+              "url": "/analytics-tracking/tracking",
+              "mot_cle": "tracking",
+              "h1": "Tracking : Suivi des Performances",
+              "h2s": [
+                "Définition de Tracking",
+                "Outils de Tracking",
+                "Analyse des Performances",
+                "Reporting et Analyse"
+              ],
+              "type_contenu": "methodologie",
+              "word_count": 1800,
+              "temps_lecture": 9
+            },
+            {
+              "titre": "Web Analytics",
+              "url": "/analytics-tracking/web-analytics",
+              "mot_cle": "web analytics",
+              "h1": "Web Analytics : Optimisation des Performances",
+              "h2s": [
+                "Définition de Web Analytics",
+                "Outils de Web Analytics",
+                "Analyse des Performances",
+                "Reporting et Analyse"
+              ],
+              "type_contenu": "methodologie",
+              "word_count": 1600,
+              "temps_lecture": 8
+            },
+            {
+              "titre": "Data Analytics",
+              "url": "/analytics-tracking/data-analytics",
+              "mot_cle": "data analytics",
+              "h1": "Data Analytics : Optimisation des Performances",
+              "h2s": [
+                "Définition de Data Analytics",
+                "Outils de Data Analytics",
+                "Analyse des Performances",
+                "Reporting et Analyse"
+              ],
+              "type_contenu": "methodologie",
+              "word_count": 1400,
+              "temps_lecture": 7
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

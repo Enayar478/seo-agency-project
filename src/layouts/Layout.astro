@@ -12,8 +12,13 @@ const {
   title,
   description,
   image = '/images/default-og.jpg',
-  canonicalURL = new URL(Astro.url.pathname, Astro.site).href,
+  canonicalURL,
 } = Astro.props;
+
+// Création de l'URL canonique de manière sécurisée
+const siteUrl = Astro.site ? Astro.site.href : 'http://localhost:4321';
+const currentPath = Astro.url.pathname;
+const fullUrl = new URL(currentPath, siteUrl).href;
 ---
 
 <!DOCTYPE html>
@@ -24,21 +29,21 @@ const {
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <title>{title}</title>
     <meta name="description" content={description} />
-    <link rel="canonical" href={canonicalURL} />
+    <link rel="canonical" href={canonicalURL || fullUrl} />
     
     <!-- Open Graph -->
     <meta property="og:type" content="website" />
-    <meta property="og:url" content={Astro.url} />
+    <meta property="og:url" content={fullUrl} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
-    <meta property="og:image" content={new URL(image, Astro.url)} />
+    <meta property="og:image" content={new URL(image, siteUrl)} />
     
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image" />
-    <meta property="twitter:url" content={Astro.url} />
+    <meta property="twitter:url" content={fullUrl} />
     <meta property="twitter:title" content={title} />
     <meta property="twitter:description" content={description} />
-    <meta property="twitter:image" content={new URL(image, Astro.url)} />
+    <meta property="twitter:image" content={new URL(image, siteUrl)} />
     
     <!-- Font -->
     <link rel="preconnect" href="https://rsms.me/" />

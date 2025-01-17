@@ -1,0 +1,125 @@
+---
+// @ts-nocheck
+console.log('🔄 Chargement du fichier de catégorie');
+
+import { getCategories, getCategory, getTopicsByCategory, getArticlesByTopic } from '../../../../lib/directus';
+import type { GetStaticPaths } from 'astro';
+import Layout from '../../../../layouts/Layout.astro';
+import Breadcrumbs from '../../../../components/Breadcrumbs.astro';
+import BlogCard from '../../../../components/BlogCard.astro';
+
+// Force le mode SSG
+export const prerender = true;
+
+// Génération des routes statiques
+export async function getStaticPaths() {
+  console.log('🚀 Début de getStaticPaths');
+  
+  try {
+    const categories = await getCategories();
+    console.log(`📂 ${categories.length} catégories trouvées`);
+
+    return categories.map(category => {
+      console.log(`🛠 Génération de la route pour ${category.titre}`);
+      return {
+        params: { category: category.slug },
+        props: { categoryData: category }
+      };
+    });
+  } catch (error) {
+    console.error('❌ Erreur dans getStaticPaths:', error);
+    return [];
+  }
+}
+
+// Récupération des données de la page
+const { categoryData } = Astro.props; // Utilisation du nouveau nom
+console.log('📦 Données de catégorie reçues:', JSON.stringify(categoryData, null, 2));
+
+// Vérification de sécurité
+if (!categoryData?.id) {
+  console.error('❌ Données de catégorie invalides:', JSON.stringify(categoryData, null, 2));
+  return new Response('Catégorie non trouvée', {
+    status: 404,
+    statusText: 'Not Found'
+  });
+}
+
+// Récupération des topics et articles
+const topics = await getTopicsByCategory(categoryData.id, categoryData.slug);
+console.log('📚 Topics trouvés:', topics.length);
+
+const articlesPromises = topics.map(topic => {
+  if (!topic.categorySlug) {
+    console.error('❌ Topic sans categorySlug:', topic);
+    return Promise.resolve([]);
+  }
+  return getArticlesByTopic(topic.id, topic.categorySlug);
+});
+
+const articlesArrays = await Promise.all(articlesPromises);
+const articles = articlesArrays.flat();
+console.log('📄 Articles trouvés:', articles.length);
+
+// Construction des breadcrumbs
+const breadcrumbs = [
+  { label: 'Accueil', href: '/' },
+  { label: 'Blog', href: '/blog' },
+  { label: categoryData.titre, href: `/blog/categories/${categoryData.slug}` }
+];
+---
+
+<Layout 
+  title={`${categoryData.titre} | Blog SEO Data-Driven`}
+  description={`Articles et ressources sur ${categoryData.titre}. Découvrez nos analyses et guides pratiques sur le SEO data-driven.`}
+>
+  <main class="pt-24 pb-16">
+    <div class="container mx-auto px-4">
+      <Breadcrumbs items={breadcrumbs} />
+      
+      <h1 class="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mt-8 mb-6">
+        {categoryData.titre}
+      </h1>
+
+      <!-- Liste des Topics -->
+      {topics.length > 0 && (
+        <div class="mb-12">
+          <div class="flex flex-wrap gap-4">
+            {topics.map(topic => (
+              <a
+                href={`#${topic.titre.toLowerCase().replace(/\s+/g, '-')}`}
+                class="px-4 py-2 bg-gray-100 dark:bg-gray-800 rounded-full text-gray-700 dark:text-gray-300 hover:bg-blue-100 dark:hover:bg-blue-900 transition-colors duration-300"
+              >
+                {topic.titre}
+              </a>
+            ))}
+          </div>
+        </div>
+      )}
+
+      <!-- Articles par Topic -->
+      {topics.map(topic => (
+        <section class="mb-16" id={topic.titre.toLowerCase().replace(/\s+/g, '-')}>
+          <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-8">
+            {topic.titre}
+          </h2>
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {articles
+              .filter(article => article?.topic?.id === topic.id)
+              .map(article => (
+                <BlogCard
+                  title={article.titre}
+                  description={article.h1}
+                  url={article.url}
+                  readingTime={article.temps_lecture}
+                  category={categoryData.titre}
+                  categoryUrl={`/blog/categories/${categoryData.slug}`}
+                />
+              ))
+            }
+          </div>
+        </section>
+      ))}
+    </div>
+  </main>
+</Layout> 

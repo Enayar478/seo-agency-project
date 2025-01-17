@@ -1,0 +1,66 @@
+{
+  "methodologie": {
+    "categorie": "MÉTHODOLOGIE DATA SEO",
+    "ordre": 2,
+    "topics": {
+      "methodologie": {
+        "titre": "Méthodologie SEO Data-Driven",
+        "mot_cle_principal": "methodologie seo data driven",
+        "mots_cles_secondaires": ["framework seo data", "process seo data", "analyse seo data"],
+        "url": "/methodologie-seo-data",
+        "meta_title": "Méthodologie SEO Data-Driven : Framework Complet | [Marque]",
+        "meta_description": "Maîtrisez la méthodologie SEO data-driven. Framework complet, processus d'analyse et méthodes de validation pour une stratégie SEO basée sur les données.",
+        "priorite": "P1",
+        "sous_topics": [
+          {
+            "titre": "Framework data-driven SEO",
+            "url": "/methodologie-seo-data/framework",
+            "mot_cle": "framework seo data driven",
+            "h1": "Framework SEO Data-Driven : Guide Complet",
+            "h2s": [
+              "Structure du framework",
+              "Composants essentiels",
+              "Mise en place du framework",
+              "Mesure de l'efficacité"
+            ],
+            "type_contenu": "framework",
+            "word_count": 2500,
+            "temps_lecture": 13
+          }
+        ]
+      }
+    }
+  },
+  "analytics_tracking": {
+    "categorie": "ANALYTICS & TRACKING",
+    "ordre": 3,
+    "topics": {
+      "analytics": {
+        "titre": "Analytics et Tracking pour SEO",
+        "mot_cle_principal": "analytics tracking seo",
+        "mots_cles_secondaires": ["ga4 seo", "gtm seo", "tracking seo avancé"],
+        "url": "/analytics-tracking-seo",
+        "meta_title": "Analytics & Tracking pour SEO : Guide Avancé | [Marque]",
+        "meta_description": "Maîtrisez l'analytics et le tracking pour votre SEO. Configuration GA4, GTM, attribution modeling et analyses comportementales avancées.",
+        "priorite": "P1",
+        "sous_topics": [
+          {
+            "titre": "Configuration avancée GA4 pour SEO",
+            "url": "/analytics-tracking-seo/ga4-configuration",
+            "mot_cle": "configuration ga4 seo",
+            "h1": "Guide de Configuration GA4 pour le SEO",
+            "h2s": [
+              "Configuration initiale GA4",
+              "Paramètres avancés pour SEO",
+              "Tracking des événements SEO",
+              "Rapports personnalisés SEO"
+            ],
+            "type_contenu": "guide technique",
+            "word_count": 2500,
+            "temps_lecture": 13
+          }
+        ]
+      }
+    }
+  }
+} 
