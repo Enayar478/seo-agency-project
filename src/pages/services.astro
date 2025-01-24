@@ -2,97 +2,114 @@
 import Layout from '../layouts/Layout.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
 
 const services = [
   {
     title: 'SEO Data-Driven',
-    description: 'Une approche du référencement naturel basée sur l\'analyse approfondie des données pour des résultats mesurables et optimaux.',
-    features: [
-      'Analyse des données de recherche',
-      'Optimisation basée sur les métriques',
-      'Suivi des KPIs en temps réel',
-      'Rapports détaillés mensuels'
-    ],
+    description: 'Optimisation basée sur l\'analyse approfondie des données et des métriques SEO. Nous utilisons des outils avancés pour identifier les opportunités de croissance.',
     icon: '📊',
-    href: '/services/seo-data-driven'
+    href: '/services/seo-data-driven',
+    features: [
+      'Analyse des données de trafic',
+      'Optimisation basée sur les KPIs',
+      'Suivi des performances en temps réel',
+      'Rapports détaillés mensuels'
+    ]
   },
   {
     title: 'Audit Technique',
-    description: 'Un examen complet de votre site web pour identifier et corriger les problèmes techniques impactant votre référencement.',
+    description: 'Analyse approfondie de votre site avec nos outils spécialisés pour identifier et corriger les problèmes techniques impactant votre SEO.',
+    icon: '🔍',
+    href: '/services/audit-technique',
     features: [
       'Analyse de la structure du site',
-      'Vérification des balises techniques',
-      'Test de performance et vitesse',
+      'Vérification des balises meta',
+      'Test de vitesse et performance',
       'Recommandations détaillées'
-    ],
-    icon: '🔍',
-    href: '/services/audit-technique'
+    ]
   },
   {
     title: 'Formation SEO',
-    description: 'Des formations personnalisées pour vous et vos équipes afin de maîtriser les techniques du SEO moderne.',
+    description: 'Montez en compétence sur le SEO data-driven avec nos experts. Formations personnalisées pour votre équipe.',
+    icon: '📚',
+    href: '/services/formation',
     features: [
       'Formations sur mesure',
       'Ateliers pratiques',
       'Support continu',
-      'Certification à la clé'
-    ],
-    icon: '📚',
-    href: '/services/formation'
+      'Certification HorizonReach'
+    ]
   }
+];
+
+const breadcrumbs = [
+  { label: 'Accueil', href: '/' },
+  { label: 'Services', href: '/services', current: true }
 ];
 ---
 
-<Layout
-  title="Nos Services SEO Data-Driven | Expertise & Solutions"
-  description="Découvrez nos services SEO basés sur les données : audit technique, optimisation data-driven et formations personnalisées pour améliorer votre visibilité en ligne."
+<Layout 
+  title="Services SEO Data-Driven | HorizonReach"
+  description="Découvrez nos services SEO data-driven : audit technique, formation et optimisation basée sur les données. Solutions sur mesure pour améliorer votre visibilité."
 >
   <Header />
-  
-  <main class="pt-20">
+
+  <main class="bg-black text-white">
     <!-- Hero Section -->
-    <section class="bg-gradient-to-r from-blue-600 to-blue-800 text-white py-20">
-      <div class="container mx-auto px-4">
-        <div class="max-w-4xl mx-auto text-center">
-          <h1 class="text-4xl md:text-5xl font-bold mb-6">
-            Nos Services SEO Data-Driven
+    <section class="relative min-h-[40vh] flex items-center">
+      <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-violet-900/20 via-black to-black"></div>
+      <div class="absolute inset-0" style="background: linear-gradient(to bottom right, rgba(139, 92, 246, 0.1) 0%, rgba(30, 64, 175, 0.1) 100%), url('/grid.svg');"></div>
+      
+      <div class="container relative mx-auto px-4 py-24">
+        <div class="max-w-4xl">
+          <Breadcrumbs items={breadcrumbs} />
+          
+          <h1 class="text-4xl md:text-6xl font-bold mt-8 mb-6">
+            <span class="block">Nos Services</span>
+            <span class="bg-gradient-to-r from-violet-500 via-blue-500 to-violet-500 bg-clip-text text-transparent">SEO Data-Driven</span>
           </h1>
-          <p class="text-xl text-blue-100">
-            Des solutions sur mesure pour optimiser votre présence en ligne
+          
+          <p class="text-xl text-gray-300 mb-8">
+            Des solutions sur mesure pour propulser votre visibilité en ligne grâce à notre expertise en SEO basé sur les données.
           </p>
         </div>
       </div>
     </section>
 
     <!-- Services Section -->
-    <section class="py-20">
-      <div class="container mx-auto px-4">
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
-          {services.map(service => (
-            <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-8 hover:shadow-xl transition-shadow">
-              <div class="text-4xl mb-6">{service.icon}</div>
-              <h2 class="text-2xl font-bold mb-4 dark:text-white">{service.title}</h2>
-              <p class="text-gray-600 dark:text-gray-300 mb-6">
-                {service.description}
-              </p>
-              <ul class="space-y-3 mb-8">
-                {service.features.map(feature => (
-                  <li class="flex items-center text-gray-600 dark:text-gray-300">
-                    <svg class="w-5 h-5 text-blue-600 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-                    </svg>
-                    {feature}
-                  </li>
-                ))}
-              </ul>
+    <section class="py-32 relative overflow-hidden">
+      <div class="absolute inset-0 bg-gradient-to-b from-black via-violet-950/20 to-black"></div>
+      <div class="container relative mx-auto px-4">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          {services.map((service) => (
+            <div class="relative group">
+              <div class="absolute inset-0 bg-gradient-to-r from-violet-600/50 to-blue-600/50 rounded-2xl blur-xl transition-all duration-300 group-hover:blur-2xl opacity-0 group-hover:opacity-100"></div>
               <a
                 href={service.href}
-                class="inline-flex items-center text-blue-600 hover:text-blue-700 font-medium"
+                class="block relative p-8 rounded-2xl bg-gray-900/50 border border-violet-500/20 hover:border-violet-500/50 transition-all duration-300 h-full"
               >
-                En savoir plus
-                <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-                </svg>
+                <div class="text-4xl mb-6">{service.icon}</div>
+                <h3 class="text-2xl font-bold mb-4 bg-gradient-to-r from-violet-400 to-blue-400 bg-clip-text text-transparent">
+                  {service.title}
+                </h3>
+                <p class="text-gray-400 mb-6">{service.description}</p>
+                <ul class="space-y-3 mb-8">
+                  {service.features.map((feature) => (
+                    <li class="flex items-center text-gray-300">
+                      <svg class="w-5 h-5 mr-2 text-violet-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                      </svg>
+                      {feature}
+                    </li>
+                  ))}
+                </ul>
+                <div class="flex items-center text-violet-400 group-hover:text-violet-300 transition-colors duration-300 mt-auto">
+                  <span>En savoir plus</span>
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2 transform group-hover:translate-x-1 transition-transform duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                  </svg>
+                </div>
               </a>
             </div>
           ))}
@@ -101,27 +118,30 @@ const services = [
     </section>
 
     <!-- CTA Section -->
-    <section class="py-20 bg-gray-50 dark:bg-gray-900">
-      <div class="container mx-auto px-4">
+    <section class="py-32 relative">
+      <div class="absolute inset-0 bg-gradient-to-t from-black via-violet-950/20 to-black"></div>
+      <div class="container relative mx-auto px-4">
         <div class="max-w-4xl mx-auto text-center">
-          <h2 class="text-3xl md:text-4xl font-bold mb-6 dark:text-white">
-            Prêt à améliorer votre visibilité en ligne ?
+          <h2 class="text-4xl md:text-5xl font-bold mb-8">
+            Prêt à <span class="bg-gradient-to-r from-violet-500 via-blue-500 to-violet-500 bg-clip-text text-transparent">transformer</span> votre SEO ?
           </h2>
-          <p class="text-xl text-gray-600 dark:text-gray-300 mb-8">
-            Contactez-nous pour discuter de votre projet et obtenir un audit gratuit
+          <p class="text-xl text-gray-300 mb-12">
+            Commencez par un audit gratuit de votre site pour découvrir votre potentiel de croissance
           </p>
-          <div class="flex flex-col sm:flex-row justify-center gap-4">
-            <a
-              href="/contact"
-              class="bg-blue-600 text-white px-8 py-4 rounded-lg hover:bg-blue-700 transition-colors"
-            >
-              Nous contacter
-            </a>
+          <div class="flex flex-col sm:flex-row gap-6 justify-center">
             <a
               href="/audit-gratuit"
-              class="bg-white text-blue-600 px-8 py-4 rounded-lg border-2 border-blue-600 hover:bg-blue-50 transition-colors dark:bg-gray-800 dark:border-blue-500 dark:text-blue-500 dark:hover:bg-gray-700"
+              class="relative px-8 py-4 font-semibold text-white rounded-lg overflow-hidden group text-center"
             >
-              Audit gratuit
+              <div class="absolute inset-0 w-full h-full transition-all duration-300 bg-gradient-to-r from-violet-600 via-blue-600 to-violet-600 group-hover:bg-gradient-to-r group-hover:from-violet-500 group-hover:via-blue-500 group-hover:to-violet-500"></div>
+              <div class="absolute inset-0 w-full h-full transition-all duration-300 opacity-0 group-hover:opacity-25 bg-[radial-gradient(circle_at_center,_white_0%,_transparent_100%)]"></div>
+              <span class="relative">Obtenir mon audit gratuit</span>
+            </a>
+            <a
+              href="/contact"
+              class="px-8 py-4 rounded-lg border border-violet-500/50 hover:border-violet-500 text-center transition-all duration-300 hover:bg-violet-500/10"
+            >
+              Parlons de votre projet
             </a>
           </div>
         </div>

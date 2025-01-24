@@ -2,13 +2,14 @@
 import Layout from '../layouts/Layout.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
 
 const steps = [
   {
-    number: '01',
+    step: 1,
     title: 'Analyse des données',
-    description: 'Nous commençons par une analyse approfondie de vos données SEO actuelles, de votre marché et de vos concurrents.',
-    details: [
+    description: 'Nous commençons par une analyse approfondie de vos données SEO actuelles pour identifier les opportunités et les points d\'amélioration.',
+    features: [
       'Audit technique complet',
       'Analyse de la concurrence',
       'Étude des mots-clés',
@@ -16,38 +17,43 @@ const steps = [
     ]
   },
   {
-    number: '02',
+    step: 2,
     title: 'Stratégie data-driven',
-    description: 'Nous élaborons une stratégie basée sur les données collectées, avec des objectifs mesurables.',
-    details: [
-      'Définition des KPIs',
+    description: 'Nous élaborons une stratégie personnalisée basée sur les données collectées, alignée avec vos objectifs business.',
+    features: [
       'Plan d\'action détaillé',
+      'KPIs personnalisés',
       'Priorisation des actions',
-      'Calendrier d\'exécution'
+      'Objectifs mesurables'
     ]
   },
   {
-    number: '03',
+    step: 3,
     title: 'Optimisation continue',
-    description: 'Nous mettons en place les optimisations et les ajustons en fonction des résultats obtenus.',
-    details: [
-      'Optimisations techniques',
-      'Création de contenu',
-      'Amélioration UX',
+    description: 'Nous mettons en place un processus d\'amélioration continue, guidé par les données et les résultats obtenus.',
+    features: [
+      'Tests A/B',
+      'Optimisation du contenu',
+      'Ajustements techniques',
       'Suivi des performances'
     ]
   },
   {
-    number: '04',
+    step: 4,
     title: 'Mesure des résultats',
-    description: 'Nous mesurons et analysons les résultats pour affiner notre stratégie et maximiser le ROI.',
-    details: [
+    description: 'Nous mesurons précisément l\'impact de nos actions et adaptons notre stratégie en conséquence.',
+    features: [
       'Rapports détaillés',
-      'Analyse des KPIs',
-      'Ajustements stratégiques',
-      'Recommandations d\'amélioration'
+      'Analyse du ROI',
+      'Tableaux de bord personnalisés',
+      'Recommandations d\'optimisation'
     ]
   }
+];
+
+const breadcrumbs = [
+  { label: 'Accueil', href: '/' },
+  { label: 'Méthodologie', href: '/methodologie', current: true }
 ];
 
 const benefits = [
@@ -74,83 +80,61 @@ const benefits = [
 ];
 ---
 
-<Layout
-  title="Notre Méthodologie SEO Data-Driven | Approche & Process"
-  description="Découvrez notre méthodologie SEO basée sur les données : analyse, stratégie, optimisation et mesure des résultats pour une performance maximale."
+<Layout 
+  title="Notre Méthodologie SEO Data-Driven | HorizonReach"
+  description="Découvrez notre approche SEO basée sur les données. Une méthodologie éprouvée en 4 étapes pour des résultats mesurables et durables."
 >
   <Header />
-  
-  <main class="pt-20">
+
+  <main class="bg-black text-white">
     <!-- Hero Section -->
-    <section class="bg-gradient-to-r from-blue-600 to-blue-800 text-white py-20">
-      <div class="container mx-auto px-4">
-        <div class="max-w-4xl mx-auto text-center">
-          <h1 class="text-4xl md:text-5xl font-bold mb-6">
-            Notre Méthodologie SEO Data-Driven
+    <section class="relative min-h-[40vh] flex items-center">
+      <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-violet-900/20 via-black to-black"></div>
+      <div class="absolute inset-0" style="background: linear-gradient(to bottom right, rgba(139, 92, 246, 0.1) 0%, rgba(30, 64, 175, 0.1) 100%), url('/grid.svg');"></div>
+      
+      <div class="container relative mx-auto px-4 py-24">
+        <div class="max-w-4xl">
+          <Breadcrumbs items={breadcrumbs} />
+          
+          <h1 class="text-4xl md:text-6xl font-bold mt-8 mb-6">
+            <span class="block">Notre</span>
+            <span class="bg-gradient-to-r from-violet-500 via-blue-500 to-violet-500 bg-clip-text text-transparent">Méthodologie</span>
           </h1>
-          <p class="text-xl text-blue-100">
-            Une approche scientifique du référencement naturel basée sur l'analyse des données
+          
+          <p class="text-xl text-gray-300 mb-8">
+            Une approche systématique et data-driven pour maximiser votre visibilité en ligne.
           </p>
         </div>
       </div>
     </section>
 
-    <!-- Process Section -->
-    <section class="py-20">
-      <div class="container mx-auto px-4">
-        <div class="max-w-6xl mx-auto">
-          {steps.map((step, index) => (
-            <div class:list={[
-              "flex flex-col md:flex-row items-start gap-8 mb-16",
-              { "md:flex-row-reverse": index % 2 === 1 }
-            ]}>
-              <div class="w-full md:w-1/2">
-                <div class="bg-blue-600 text-white text-4xl font-bold w-16 h-16 rounded-full flex items-center justify-center mb-6">
-                  {step.number}
+    <!-- Steps Section -->
+    <section class="py-32 relative overflow-hidden">
+      <div class="absolute inset-0 bg-gradient-to-b from-black via-violet-950/20 to-black"></div>
+      <div class="container relative mx-auto px-4">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          {steps.map((step) => (
+            <div class="relative group">
+              <div class="absolute inset-0 bg-gradient-to-r from-violet-600/50 to-blue-600/50 rounded-2xl blur-xl transition-all duration-300 group-hover:blur-2xl opacity-0 group-hover:opacity-100"></div>
+              <div class="relative p-8 rounded-2xl bg-gray-900/50 border border-violet-500/20 hover:border-violet-500/50 transition-all duration-300">
+                <div class="absolute -top-4 -left-4 w-12 h-12 bg-gradient-to-r from-violet-600 to-blue-600 rounded-xl flex items-center justify-center text-xl font-bold">
+                  {step.step}
                 </div>
-                <h2 class="text-3xl font-bold mb-4 dark:text-white">{step.title}</h2>
-                <p class="text-gray-600 dark:text-gray-300 mb-6">{step.description}</p>
+                <h3 class="text-2xl font-bold mb-4 pt-4 bg-gradient-to-r from-violet-400 to-blue-400 bg-clip-text text-transparent">
+                  {step.title}
+                </h3>
+                <p class="text-gray-400 mb-6">{step.description}</p>
                 <ul class="space-y-3">
-                  {step.details.map(detail => (
-                    <li class="flex items-center text-gray-600 dark:text-gray-300">
-                      <svg class="w-5 h-5 text-blue-600 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                  {step.features.map((feature) => (
+                    <li class="flex items-center text-gray-300">
+                      <svg class="w-5 h-5 mr-2 text-violet-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
                       </svg>
-                      {detail}
+                      {feature}
                     </li>
                   ))}
                 </ul>
               </div>
-              <div class="w-full md:w-1/2 bg-gray-100 dark:bg-gray-800 rounded-xl p-8">
-                <img
-                  src={`/images/methodology-step-${index + 1}.svg`}
-                  alt={step.title}
-                  class="w-full h-auto"
-                />
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-
-    <!-- Benefits Section -->
-    <section class="py-20 bg-gray-50 dark:bg-gray-900">
-      <div class="container mx-auto px-4">
-        <div class="max-w-4xl mx-auto text-center mb-16">
-          <h2 class="text-3xl md:text-4xl font-bold mb-6 dark:text-white">
-            Les avantages de notre approche
-          </h2>
-          <p class="text-xl text-gray-600 dark:text-gray-300">
-            Une méthodologie éprouvée qui garantit des résultats mesurables
-          </p>
-        </div>
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-6xl mx-auto">
-          {benefits.map(benefit => (
-            <div class="bg-white dark:bg-gray-800 p-8 rounded-xl shadow-lg text-center">
-              <div class="text-4xl mb-4">{benefit.icon}</div>
-              <h3 class="text-xl font-bold mb-4 dark:text-white">{benefit.title}</h3>
-              <p class="text-gray-600 dark:text-gray-300">{benefit.description}</p>
             </div>
           ))}
         </div>
@@ -158,27 +142,30 @@ const benefits = [
     </section>
 
     <!-- CTA Section -->
-    <section class="py-20">
-      <div class="container mx-auto px-4">
+    <section class="py-32 relative">
+      <div class="absolute inset-0 bg-gradient-to-t from-black via-violet-950/20 to-black"></div>
+      <div class="container relative mx-auto px-4">
         <div class="max-w-4xl mx-auto text-center">
-          <h2 class="text-3xl md:text-4xl font-bold mb-6 dark:text-white">
-            Prêt à optimiser votre SEO avec les données ?
+          <h2 class="text-4xl md:text-5xl font-bold mb-8">
+            Prêt à <span class="bg-gradient-to-r from-violet-500 via-blue-500 to-violet-500 bg-clip-text text-transparent">démarrer</span> ?
           </h2>
-          <p class="text-xl text-gray-600 dark:text-gray-300 mb-8">
-            Découvrez comment notre approche data-driven peut améliorer votre visibilité en ligne
+          <p class="text-xl text-gray-300 mb-12">
+            Découvrez comment notre méthodologie peut transformer votre présence en ligne
           </p>
-          <div class="flex flex-col sm:flex-row justify-center gap-4">
+          <div class="flex flex-col sm:flex-row gap-6 justify-center">
             <a
-              href="/contact"
-              class="bg-blue-600 text-white px-8 py-4 rounded-lg hover:bg-blue-700 transition-colors"
+              href="/audit-gratuit"
+              class="relative px-8 py-4 font-semibold text-white rounded-lg overflow-hidden group text-center"
             >
-              Parlons de votre projet
+              <div class="absolute inset-0 w-full h-full transition-all duration-300 bg-gradient-to-r from-violet-600 via-blue-600 to-violet-600 group-hover:bg-gradient-to-r group-hover:from-violet-500 group-hover:via-blue-500 group-hover:to-violet-500"></div>
+              <div class="absolute inset-0 w-full h-full transition-all duration-300 opacity-0 group-hover:opacity-25 bg-[radial-gradient(circle_at_center,_white_0%,_transparent_100%)]"></div>
+              <span class="relative">Commencer maintenant</span>
             </a>
             <a
-              href="/services"
-              class="bg-white text-blue-600 px-8 py-4 rounded-lg border-2 border-blue-600 hover:bg-blue-50 transition-colors dark:bg-gray-800 dark:border-blue-500 dark:text-blue-500 dark:hover:bg-gray-700"
+              href="/contact"
+              class="px-8 py-4 rounded-lg border border-violet-500/50 hover:border-violet-500 text-center transition-all duration-300 hover:bg-violet-500/10"
             >
-              Voir nos services
+              Parlons de votre projet
             </a>
           </div>
         </div>

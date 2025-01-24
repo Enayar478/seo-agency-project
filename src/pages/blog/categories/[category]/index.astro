@@ -5,6 +5,8 @@ console.log('🔄 Chargement du fichier de catégorie');
 import { getCategories, getCategory, getTopicsByCategory, getArticlesByTopic } from '../../../../lib/directus';
 import type { GetStaticPaths } from 'astro';
 import Layout from '../../../../layouts/Layout.astro';
+import Header from '../../../../components/Header.astro';
+import Footer from '../../../../components/Footer.astro';
 import Breadcrumbs from '../../../../components/Breadcrumbs.astro';
 import BlogCard from '../../../../components/BlogCard.astro';
 
@@ -33,7 +35,7 @@ export async function getStaticPaths() {
 }
 
 // Récupération des données de la page
-const { categoryData } = Astro.props; // Utilisation du nouveau nom
+const { categoryData } = Astro.props;
 console.log('📦 Données de catégorie reçues:', JSON.stringify(categoryData, null, 2));
 
 // Vérification de sécurité
@@ -46,17 +48,10 @@ if (!categoryData?.id) {
 }
 
 // Récupération des topics et articles
-const topics = await getTopicsByCategory(categoryData.id, categoryData.slug);
+const topics = await getTopicsByCategory(categoryData.id);
 console.log('📚 Topics trouvés:', topics.length);
 
-const articlesPromises = topics.map(topic => {
-  if (!topic.categorySlug) {
-    console.error('❌ Topic sans categorySlug:', topic);
-    return Promise.resolve([]);
-  }
-  return getArticlesByTopic(topic.id, topic.categorySlug);
-});
-
+const articlesPromises = topics.map(topic => getArticlesByTopic(topic.id, categoryData.slug));
 const articlesArrays = await Promise.all(articlesPromises);
 const articles = articlesArrays.flat();
 console.log('📄 Articles trouvés:', articles.length);
@@ -65,61 +60,67 @@ console.log('📄 Articles trouvés:', articles.length);
 const breadcrumbs = [
   { label: 'Accueil', href: '/' },
   { label: 'Blog', href: '/blog' },
-  { label: categoryData.titre, href: `/blog/categories/${categoryData.slug}` }
+  { label: categoryData.titre, href: `/blog/categories/${categoryData.slug}`, current: true }
 ];
 ---
 
 <Layout 
-  title={`${categoryData.titre} | Blog SEO Data-Driven`}
-  description={`Articles et ressources sur ${categoryData.titre}. Découvrez nos analyses et guides pratiques sur le SEO data-driven.`}
+  title={`${categoryData.titre} | Blog HorizonReach`}
+  description={`Découvrez nos articles sur ${categoryData.titre}. Guides pratiques et analyses détaillées pour améliorer votre SEO.`}
 >
-  <main class="pt-24 pb-16">
-    <div class="container mx-auto px-4">
-      <Breadcrumbs items={breadcrumbs} />
+  <Header />
+
+  <main class="bg-black text-white">
+    <!-- Hero Section -->
+    <section class="relative min-h-[40vh] flex items-center">
+      <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-violet-900/20 via-black to-black"></div>
+      <div class="absolute inset-0" style="background: linear-gradient(to bottom right, rgba(139, 92, 246, 0.1) 0%, rgba(30, 64, 175, 0.1) 100%), url('/grid.svg');"></div>
       
-      <h1 class="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mt-8 mb-6">
-        {categoryData.titre}
-      </h1>
-
-      <!-- Liste des Topics -->
-      {topics.length > 0 && (
-        <div class="mb-12">
-          <div class="flex flex-wrap gap-4">
-            {topics.map(topic => (
-              <a
-                href={`#${topic.titre.toLowerCase().replace(/\s+/g, '-')}`}
-                class="px-4 py-2 bg-gray-100 dark:bg-gray-800 rounded-full text-gray-700 dark:text-gray-300 hover:bg-blue-100 dark:hover:bg-blue-900 transition-colors duration-300"
-              >
-                {topic.titre}
-              </a>
-            ))}
-          </div>
+      <div class="container relative mx-auto px-4 py-24">
+        <div class="max-w-4xl">
+          <Breadcrumbs items={breadcrumbs} />
+          
+          <h1 class="text-4xl md:text-6xl font-bold mt-8 mb-6">
+            <span class="block">Articles sur</span>
+            <span class="bg-gradient-to-r from-violet-500 via-blue-500 to-violet-500 bg-clip-text text-transparent">{categoryData.titre}</span>
+          </h1>
+          
+          <p class="text-xl text-gray-300 mb-8">
+            {categoryData.description}
+          </p>
         </div>
-      )}
+      </div>
+    </section>
 
-      <!-- Articles par Topic -->
-      {topics.map(topic => (
-        <section class="mb-16" id={topic.titre.toLowerCase().replace(/\s+/g, '-')}>
-          <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-8">
-            {topic.titre}
-          </h2>
-          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {articles
-              .filter(article => article?.topic?.id === topic.id)
-              .map(article => (
-                <BlogCard
-                  title={article.titre}
-                  description={article.h1}
-                  url={article.url}
-                  readingTime={article.temps_lecture}
-                  category={categoryData.titre}
-                  categoryUrl={`/blog/categories/${categoryData.slug}`}
-                />
-              ))
-            }
-          </div>
-        </section>
-      ))}
-    </div>
+    <!-- Topics Section -->
+    <section class="py-32 relative overflow-hidden">
+      <div class="absolute inset-0 bg-gradient-to-b from-black via-violet-950/20 to-black"></div>
+      <div class="container relative mx-auto px-4">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {topics.map((topic) => (
+            <div class="relative group">
+              <div class="absolute inset-0 bg-gradient-to-r from-violet-600/50 to-blue-600/50 rounded-2xl blur-xl transition-all duration-300 group-hover:blur-2xl opacity-0 group-hover:opacity-100"></div>
+              <a
+                href={topic.url}
+                class="block relative p-8 rounded-2xl bg-gray-900/50 border border-violet-500/20 hover:border-violet-500/50 transition-all duration-300"
+              >
+                <h3 class="text-xl font-bold mb-4 bg-gradient-to-r from-violet-400 to-blue-400 bg-clip-text text-transparent">
+                  {topic.titre}
+                </h3>
+                <p class="text-gray-400 mb-6">{topic.mot_cle_principal}</p>
+                <div class="flex items-center text-violet-400 group-hover:text-violet-300 transition-colors duration-300">
+                  <span>Lire les articles</span>
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2 transform group-hover:translate-x-1 transition-transform duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                  </svg>
+                </div>
+              </a>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
   </main>
+
+  <Footer />
 </Layout> 

@@ -1,61 +1,59 @@
 // lib/directus.ts
-import { createDirectus, rest, readItems, authentication } from '@directus/sdk';
-import type { RestClient } from '@directus/sdk';
+import { createDirectus, staticToken, rest, readItems } from '@directus/sdk';
+import type { QueryFilter, RestClient, StaticTokenClient } from '@directus/sdk';
 
-// Types
-interface DirectusSchema {
-  categories: Category[];
-  topics: Topic[];
-  articles: Article[];
-}
-
-interface Category {
-  id: string; 
-  slug: string;
-  titre: string;
-  ordre: number;
-}
-
-interface Topic {
-  id: string;
-  titre: string;
-  mot_cle_principal: string;
-  url: string;
-  categorie: string | Category;
-}
-
-interface Article {
-  id: string;
-  titre: string;
-  url: string;
-  mot_cle: string;
-  h1: string;
-  h2s: string[];
-  type_contenu: string;
-  word_count: number;
-  temps_lecture: number;
-  contenu: string;
-  topic: {
+// Types de base pour les collections
+type DirectusSchema = {
+  categories: {
     id: string;
     titre: string;
-    categorie?: {
-      slug: string;
-    };
+    slug: string;
+    ordre: number;
+    description?: string;
   };
-  status: 'published' | 'draft';
-}
+  topics: {
+    id: string;
+    titre: string;
+    mot_cle_principal: string;
+    url: string;
+    categorie_id: string;
+    categorie?: DirectusSchema['categories'];
+  };
+  articles: {
+    id: string;
+    titre: string;
+    description: string;
+    contenu: string;
+    url: string;
+    temps_lecture: number;
+    topic_id: string;
+    mot_cle?: string;
+    h1?: string;
+    h2s?: string[];
+    type_contenu?: string;
+    word_count?: number;
+    status?: string;
+    topic?: DirectusSchema['topics'];
+  };
+};
 
-// S'assurer que l'URL est valide
-const directusUrl = import.meta.env.PUBLIC_DIRECTUS_URL || 'http://localhost:8055';
+// Export des types pour l'utilisation externe
+export type Category = DirectusSchema['categories'];
+export type Topic = DirectusSchema['topics'];
+export type Article = DirectusSchema['articles'];
 
-const directus = createDirectus<DirectusSchema>(directusUrl)
-  .with(authentication())
+const client = createDirectus<DirectusSchema>(process.env.PUBLIC_DIRECTUS_URL || 'http://localhost:8055')
+  .with(staticToken(process.env.PUBLIC_DIRECTUS_TOKEN || ''))
   .with(rest());
 
-// Configure l'authentification statique après l'initialisation
-const token = import.meta.env.PUBLIC_DIRECTUS_TOKEN || '';
-if (token) {
-  directus.setToken(token);
+type DirectusClient = RestClient<DirectusSchema> & StaticTokenClient<DirectusSchema>;
+
+// Fonction helper pour typer les réponses
+async function readCollection<T extends keyof DirectusSchema>(
+  collection: T,
+  query: Parameters<typeof readItems>[1]
+): Promise<DirectusSchema[T]> {
+  return client.request(readItems(collection, query)) as Promise<DirectusSchema[T]>;
 }
 
 const TIMEOUT = 10000; // 10 secondes
@@ -113,122 +111,74 @@ async function handleRequest<T>(requestFn: () => Promise<T>, context: string): P
 
 export async function getCategories() {
   try {
-    console.log('Tentative de récupération des catégories...');
-    const result = await handleRequest(
-      () => directus.request(
-        readItems('categories', {
-          fields: ['id', 'slug', 'titre', 'ordre'],
-          sort: ['ordre']
-        })
-      ),
-      'getCategories'
-    );
+    console.log('🔄 Récupération des catégories');
+    const categories = await client.request(readItems('categories', {
+      fields: ['id', 'titre', 'slug', 'ordre', 'description'],
+      sort: ['ordre']
+    }));
     
-    if (!result || result.length === 0) {
-      console.error('Aucune catégorie trouvée dans Directus');
+    if (!categories || categories.length === 0) {
+      console.error('❌ Aucune catégorie trouvée');
       return [];
     }
 
-    // Vérification des slugs
-    result.forEach(category => {
-      console.log('Catégorie trouvée:', {
-        id: category.id,
-        titre: category.titre,
-        slug: category.slug,
-        ordre: category.ordre
-      });
-      
-      if (!category.slug) {
-        console.error('Catégorie sans slug:', category);
-      }
-    });
-
-    return result;
+    console.log(`✅ ${categories.length} catégories trouvées`);
+    return categories;
   } catch (error) {
-    console.error('Erreur complète dans getCategories:', error);
+    console.error('❌ Erreur lors de la récupération des catégories:', error);
     return [];
   }
 }
 
 export async function getCategory(slug: string) {
   try {
-    console.log('Tentative de récupération de la catégorie avec le slug:', slug);
-    const categories = await handleRequest(
-      () => directus.request(
-        readItems('categories', {
-          fields: ['id', 'slug', 'titre', 'ordre'],
-          filter: {
-            slug: { _eq: slug }
-          },
-          limit: 1
-        })
-      ),
-      'getCategory'
-    );
-    console.log('Résultat de getCategory:', JSON.stringify(categories, null, 2));
-    
+    console.log(`🔄 Récupération de la catégorie ${slug}`);
+    const categories = await client.request(readItems('categories', {
+      fields: ['id', 'titre', 'slug', 'description'],
+      filter: {
+        slug: { _eq: slug }
+      }
+    }));
+
     if (!categories || categories.length === 0) {
-      console.error('Aucune catégorie trouvée pour le slug:', slug);
+      console.error(`❌ Catégorie ${slug} non trouvée`);
       return null;
     }
-    
+
+    console.log(`✅ Catégorie ${slug} trouvée`);
     return categories[0];
   } catch (error) {
-    console.error('Erreur complète dans getCategory:', error);
+    console.error(`❌ Erreur lors de la récupération de la catégorie ${slug}:`, error);
     return null;
   }
 }
 
-export async function getTopicsByCategory(categoryId: string, categorySlug?: string) {
-  if (!categoryId) {
-    console.error('categoryId est manquant');
-    throw new Error('categoryId est requis');
-  }
-  
+export async function getTopicsByCategory(categoryId: string) {
   try {
-    console.log('Tentative de récupération des topics pour la catégorie:', categoryId);
-    
-    const response = await fetch(`${import.meta.env.PUBLIC_DIRECTUS_URL}/items/topics?filter[categorie][_eq]=${categoryId}&fields=id,titre,mot_cle_principal,url`, {
-      headers: {
-        'Authorization': `Bearer ${import.meta.env.PUBLIC_DIRECTUS_TOKEN}`
-      }
-    });
+    console.log(`🔄 Récupération des topics pour la catégorie ${categoryId}`);
+    const topics = await client.request(readItems('topics', {
+      fields: ['id', 'titre', 'mot_cle_principal', 'url', { categorie: ['id', 'titre', 'slug'] }],
+      filter: {
+        categorie_id: { _eq: categoryId }
+      } as QueryFilter<DirectusSchema, 'topics'>
+    }));
 
-    if (!response.ok) {
-      throw new Error(`Erreur HTTP: ${response.status} - ${await response.text()}`);
-    }
-
-    const data = await response.json();
-    const topics = data.data;
-    
     if (!topics || topics.length === 0) {
-      console.log('Aucun topic trouvé pour la catégorie:', categoryId);
+      console.log(`ℹ️ Aucun topic trouvé pour la catégorie ${categoryId}`);
       return [];
     }
-    
-    // Ajout du slug de la catégorie à chaque topic
-    const topicsWithCategory = topics.map((topic: Topic) => {
-      console.log('Topic trouvé:', {
-        id: topic.id,
-        titre: topic.titre,
-        categorySlug
-      });
-      return {
-        ...topic,
-        categorySlug: categorySlug // Utiliser le slug passé en paramètre
-      };
-    });
-    
-    return topicsWithCategory;
+
+    console.log(`✅ ${topics.length} topics trouvés`);
+    return topics;
   } catch (error) {
-    console.error('Erreur complète dans getTopicsByCategory:', error);
+    console.error(`❌ Erreur lors de la récupération des topics:`, error);
     return [];
   }
 }
 
 export async function getTopic(slug: string) {
   const topics = await handleRequest(
-    () => directus.request(
+    () => client.request(
       readItems('topics', {
         fields: ['id', 'titre', 'mot_cle_principal', 'url', { categorie: ['id', 'titre', 'slug'] }],
         filter: {
@@ -243,92 +193,31 @@ export async function getTopic(slug: string) {
 }
 
 export async function getArticlesByTopic(topicId: string, categorySlug: string) {
-  if (!topicId) {
-    throw new Error('topicId est requis');
-  }
-
-  if (!categorySlug) {
-    throw new Error('categorySlug est requis');
-  }
-
   try {
-    console.log('🔍 Tentative de récupération des articles pour le topic:', topicId);
-    
-    // Récupérer les articles
-    const response = await fetch(`${import.meta.env.PUBLIC_DIRECTUS_URL}/items/articles?filter[topic][_eq]=${topicId}&fields=id,titre,url,mot_cle,h1,h2s,type_contenu,word_count,temps_lecture,contenu,topic.id,topic.titre`, {
-      headers: {
-        'Authorization': `Bearer ${import.meta.env.PUBLIC_DIRECTUS_TOKEN}`
-      }
-    });
+    console.log(`🔄 Récupération des articles pour le topic ${topicId}`);
+    const articles = await client.request(readItems('articles', {
+      fields: ['id', 'titre', 'description', 'url', 'temps_lecture', 'h2s'],
+      filter: {
+        topic_id: { _eq: topicId }
+      } as QueryFilter<DirectusSchema, 'articles'>
+    }));
 
-    if (!response.ok) {
-      throw new Error(`Erreur HTTP: ${response.status} - ${await response.text()}`);
-    }
-
-    const data = await response.json();
-    const articles = data.data;
-
-    if (!articles || !Array.isArray(articles) || articles.length === 0) {
-      console.log('⚠️ Aucun article retourné pour le topic:', topicId);
+    if (!articles || articles.length === 0) {
+      console.log(`ℹ️ Aucun article trouvé pour le topic ${topicId}`);
       return [];
     }
 
-    // Ajout du topic à chaque article et correction des URLs
-    const articlesWithTopic = articles.map(article => {
-      // Nettoyer l'URL pour obtenir uniquement le slug
-      const articleSlug = article.url
-        ?.replace(/^\/+|\/+$/g, '') // Enlever les slashes au début et à la fin
-        ?.split('/')
-        ?.pop() || '';
-
-      // Construire l'URL complète avec le format /blog/categories/[category]/[article]
-      const url = `/blog/categories/${categorySlug}/${articleSlug}`;
-      
-      console.log('🔗 Construction URL article:', {
-        categorySlug,
-        articleSlug,
-        originalUrl: article.url,
-        finalUrl: url
-      });
-      
-      return {
-        ...article,
-        url,
-        topic: {
-          id: topicId,
-          titre: article.topic?.titre || 'Topic inconnu',
-          categorie: { slug: categorySlug }
-        }
-      };
-    });
-
-    console.log('✅ Articles récupérés pour le topic', topicId, ':', {
-      nombre: articlesWithTopic.length,
-      articles: articlesWithTopic.map(a => ({
-        id: a?.id || 'ID manquant',
-        titre: a?.titre || 'Titre manquant',
-        url: a?.url || 'URL manquante',
-        topic: a?.topic?.id || 'Topic manquant'
-      }))
-    });
-
-    return articlesWithTopic;
-  } catch (error: any) {
-    console.error('❌ Erreur détaillée dans getArticlesByTopic:', {
-      message: error.message,
-      status: error?.response?.status,
-      code: error?.code,
-      name: error?.name,
-      stack: error?.stack,
-      response: error?.response ? await error.response.text() : undefined
-    });
+    console.log(`✅ ${articles.length} articles trouvés`);
+    return articles;
+  } catch (error) {
+    console.error(`❌ Erreur lors de la récupération des articles:`, error);
     return [];
   }
 }
 
 export async function getArticle(slug: string) {
   const articles = await handleRequest(
-    () => directus.request(
+    () => client.request(
       readItems('articles', {
         fields: [
           'id',
@@ -359,7 +248,7 @@ export async function getLatestArticles(limit: number = 6) {
   try {
     console.log('🚀 Récupération des derniers articles...');
     
-    const articles = await directus.request(
+    const articles = await client.request(
       readItems('articles', {
         fields: ['id', 'titre', 'h1', 'url', 'temps_lecture'],
         sort: ['-id'],
@@ -385,4 +274,4 @@ export async function getLatestArticles(limit: number = 6) {
   }
 }
 
-export { directus };
+export { client };

@@ -58,6 +58,7 @@ const fullUrl = new URL(currentPath, siteUrl).href;
   </head>
   <body class="min-h-screen bg-white dark:bg-gray-900">
     <slot />
+    {/* @ts-expect-error Server Component */}
     <SpeedInsights />
     
     <script>
@@ -74,4 +75,4 @@ const fullUrl = new URL(currentPath, siteUrl).href;
       }
     </script>
   </body>
-</html> 
+</html>
