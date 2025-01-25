@@ -1,78 +1,28 @@
 ---
 import { ViewTransitions } from 'astro:transitions';
-import SpeedInsights from "@vercel/speed-insights/astro"
 
 interface Props {
   title: string;
   description: string;
-  image?: string;
-  canonicalURL?: string;
 }
 
-const {
-  title,
-  description,
-  image = '/images/default-og.jpg',
-  canonicalURL,
-} = Astro.props;
-
-// Création de l'URL canonique de manière sécurisée
-const siteUrl = Astro.site ? Astro.site.href : 'http://localhost:4321';
-const currentPath = Astro.url.pathname;
-const fullUrl = new URL(currentPath, siteUrl).href;
+const { title, description } = Astro.props;
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 ---
 
-<!DOCTYPE html>
-<html lang="fr" dir="ltr">
+<!doctype html>
+<html lang="fr">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
     <meta name="description" content={description} />
-    <link rel="canonical" href={canonicalURL || fullUrl} />
-    
-    <!-- Open Graph -->
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content={fullUrl} />
-    <meta property="og:title" content={title} />
-    <meta property="og:description" content={description} />
-    <meta property="og:image" content={new URL(image, siteUrl)} />
-    
-    <!-- Twitter -->
-    <meta property="twitter:card" content="summary_large_image" />
-    <meta property="twitter:url" content={fullUrl} />
-    <meta property="twitter:title" content={title} />
-    <meta property="twitter:description" content={description} />
-    <meta property="twitter:image" content={new URL(image, siteUrl)} />
-    
-    <!-- Font -->
-    <link rel="preconnect" href="https://rsms.me/" />
-    <link rel="stylesheet" href="https://rsms.me/inter/inter.css" />
-    
-    <!-- PWA -->
-    <meta name="theme-color" content="#ffffff" />
-    <link rel="manifest" href="/manifest.json" />
-    
+    <link rel="canonical" href={canonicalURL} />
     <ViewTransitions />
   </head>
   <body class="min-h-screen bg-white dark:bg-gray-900">
     <slot />
-    {/* @ts-expect-error Server Component */}
-    <SpeedInsights />
-    
-    <script>
-      // PWA registration
-      if ('serviceWorker' in navigator && import.meta.env.PROD) {
-        window.addEventListener('load', async () => {
-          try {
-            const registration = await navigator.serviceWorker.register('/sw.js');
-            console.log('Service Worker registered successfully:', registration);
-          } catch (error) {
-            console.error('Service Worker registration failed:', error);
-          }
-        });
-      }
-    </script>
   </body>
 </html>

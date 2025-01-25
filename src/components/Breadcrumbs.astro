@@ -2,71 +2,86 @@
 interface Props {
   items: {
     label: string;
-    href?: string;
-    current?: boolean;
+    href: string;
   }[];
-  className?: string;
 }
 
-const { items, className = '' } = Astro.props;
-
-// Assurez-vous que les URLs sont valides
-const baseUrl = Astro.site ? Astro.site.href : 'http://localhost:4321';
+const { items } = Astro.props;
 ---
 
-<nav aria-label="Breadcrumb" class={`text-sm ${className}`}>
-  <ol class="flex flex-wrap items-center space-x-2">
+<nav aria-label="Fil d'Ariane" class="py-3 sm:py-4 animate-fade-in">
+  <ol class="flex flex-wrap items-center gap-2 text-sm">
+    <li class="flex items-center">
+      <a 
+        href="/" 
+        class="text-gray-500 hover:text-primary-500 dark:text-gray-400 dark:hover:text-primary-400 transition-colors duration-300"
+      >
+        <svg 
+          class="w-4 h-4" 
+          fill="none" 
+          stroke="currentColor" 
+          viewBox="0 0 24 24"
+        >
+          <path 
+            stroke-linecap="round" 
+            stroke-linejoin="round" 
+            stroke-width="2" 
+            d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
+          />
+        </svg>
+        <span class="sr-only">Accueil</span>
+      </a>
+    </li>
+
     {items.map((item, index) => (
-      <li class="flex items-center">
-        {index > 0 && (
-          <svg
-            class="w-5 h-5 mx-2 text-gray-400 dark:text-gray-500"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M9 5l7 7-7 7"
-            />
-          </svg>
-        )}
-        {item.href && !item.current ? (
+      <li class="flex items-center gap-2">
+        <svg 
+          class="w-3 h-3 text-gray-400 dark:text-gray-600" 
+          fill="none" 
+          stroke="currentColor" 
+          viewBox="0 0 24 24"
+        >
+          <path 
+            stroke-linecap="round" 
+            stroke-linejoin="round" 
+            stroke-width="2" 
+            d="M9 5l7 7-7 7"
+          />
+        </svg>
+
+        {index === items.length - 1 ? (
+          <span class="font-medium text-primary-600 dark:text-primary-400">
+            {item.label}
+          </span>
+        ) : (
           <a
             href={item.href}
-            class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-300"
+            class="text-gray-500 hover:text-primary-500 dark:text-gray-400 dark:hover:text-primary-400 transition-colors duration-300"
           >
             {item.label}
           </a>
-        ) : (
-          <span class={`${item.current ? 'font-medium text-blue-600 dark:text-blue-400' : 'text-gray-500 dark:text-gray-400'}`}>
-            {item.label}
-          </span>
         )}
       </li>
     ))}
   </ol>
 </nav>
 
-<script define:vars={{ items, baseUrl }}>
-  // Schema.org breadcrumbs
-  const schema = {
-    '@context': 'https://schema.org',
-    '@type': 'BreadcrumbList',
-    'itemListElement': items.map((item, index) => ({
-      '@type': 'ListItem',
-      'position': index + 1,
-      'item': {
-        '@id': item.href ? new URL(item.href, baseUrl).href : baseUrl,
-        'name': item.label
-      }
-    }))
-  };
-
-  const script = document.createElement('script');
-  script.setAttribute('type', 'application/ld+json');
-  script.textContent = JSON.stringify(schema);
-  document.head.appendChild(script);
-</script> 
+<style>
+  @media (max-width: 640px) {
+    nav {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none; /* Firefox */
+      -ms-overflow-style: none; /* IE and Edge */
+    }
+    
+    nav::-webkit-scrollbar {
+      display: none; /* Chrome, Safari, Opera */
+    }
+    
+    ol {
+      padding-bottom: 4px; /* Pour éviter que le scrollbar ne coupe le contenu */
+      white-space: nowrap;
+    }
+  }
+</style> 

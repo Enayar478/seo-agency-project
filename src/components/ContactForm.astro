@@ -1,31 +1,35 @@
 ---
 ---
 
-<form class="space-y-6" action="/api/contact" method="POST">
-  <div>
-    <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
-      Nom complet
-    </label>
-    <input
-      type="text"
-      name="name"
-      id="name"
-      required
-      class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-    />
-  </div>
+<form class="space-y-6 animate-fade-in" action="/api/contact" method="POST">
+  <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+    <div>
+      <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+        Nom complet
+      </label>
+      <input
+        type="text"
+        name="name"
+        id="name"
+        required
+        class="mt-2 block w-full rounded-lg border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:placeholder-gray-400 sm:text-sm transition-colors duration-200"
+        placeholder="Jean Dupont"
+      />
+    </div>
 
-  <div>
-    <label for="email" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
-      Email
-    </label>
-    <input
-      type="email"
-      name="email"
-      id="email"
-      required
-      class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-    />
+    <div>
+      <label for="email" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+        Email
+      </label>
+      <input
+        type="email"
+        name="email"
+        id="email"
+        required
+        class="mt-2 block w-full rounded-lg border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:placeholder-gray-400 sm:text-sm transition-colors duration-200"
+        placeholder="jean@exemple.com"
+      />
+    </div>
   </div>
 
   <div>
@@ -36,7 +40,8 @@
       type="tel"
       name="phone"
       id="phone"
-      class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+      class="mt-2 block w-full rounded-lg border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:placeholder-gray-400 sm:text-sm transition-colors duration-200"
+      placeholder="06 12 34 56 78"
     />
   </div>
 
@@ -49,16 +54,50 @@
       id="message"
       rows="4"
       required
-      class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+      class="mt-2 block w-full rounded-lg border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:placeholder-gray-400 sm:text-sm transition-colors duration-200 resize-y"
+      placeholder="Votre message..."
     ></textarea>
   </div>
 
   <div>
     <button
       type="submit"
-      class="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+      class="w-full sm:w-auto min-w-[200px] inline-flex justify-center items-center px-6 py-3 rounded-lg text-sm font-semibold text-white shadow-sm bg-gradient-to-r from-primary-600 via-secondary-600 to-primary-600 hover:from-primary-500 hover:via-secondary-500 hover:to-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition-all duration-300 group"
     >
-      Envoyer
+      <span>Envoyer</span>
+      <svg 
+        class="w-5 h-5 ml-2 -mr-1 transform group-hover:translate-x-1 transition-transform" 
+        fill="none" 
+        stroke="currentColor" 
+        viewBox="0 0 24 24"
+      >
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+      </svg>
     </button>
   </div>
-</form> 
+</form>
+
+<script>
+  const form = document.querySelector('form');
+  form?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const formData = new FormData(form);
+    
+    try {
+      const response = await fetch(form.action, {
+        method: 'POST',
+        body: formData
+      });
+      
+      if (response.ok) {
+        alert('Message envoyé avec succès !');
+        form.reset();
+      } else {
+        throw new Error('Erreur lors de l\'envoi du message');
+      }
+    } catch (error) {
+      alert('Une erreur est survenue. Veuillez réessayer.');
+      console.error('Erreur:', error);
+    }
+  });
+</script> 

@@ -1,0 +1,87 @@
+---
+interface Props {
+  categories: {
+    titre: string;
+    slug: string;
+    count?: number;
+  }[];
+  currentCategory?: string;
+}
+
+const { categories, currentCategory } = Astro.props;
+---
+
+<nav class="w-full animate-fade-in">
+  <!-- Navigation mobile -->
+  <div class="relative sm:hidden">
+    <select
+      onchange="window.location.href=this.value"
+      class="block w-full rounded-lg border-gray-300 py-2 pl-3 pr-10 text-base focus:border-primary-500 focus:outline-none focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+    >
+      <option value="/blog">Toutes les catégories</option>
+      {categories.map(category => (
+        <option 
+          value={`/blog/categories/${category.slug}`}
+          selected={currentCategory === category.slug}
+        >
+          {category.titre} {category.count ? `(${category.count})` : ''}
+        </option>
+      ))}
+    </select>
+  </div>
+
+  <!-- Navigation desktop -->
+  <div class="hidden sm:block">
+    <div class="flex flex-wrap items-center gap-2">
+      <a
+        href="/blog"
+        class:list={[
+          "inline-flex items-center px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300",
+          !currentCategory 
+            ? "bg-primary-500/10 text-primary-600 dark:text-primary-400" 
+            : "text-gray-600 hover:text-primary-600 dark:text-gray-400 dark:hover:text-primary-400 hover:bg-primary-500/10"
+        ]}
+      >
+        Tous les articles
+      </a>
+
+      {categories.map(category => (
+        <a
+          href={`/blog/categories/${category.slug}`}
+          class:list={[
+            "inline-flex items-center px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300 group",
+            currentCategory === category.slug
+              ? "bg-primary-500/10 text-primary-600 dark:text-primary-400"
+              : "text-gray-600 hover:text-primary-600 dark:text-gray-400 dark:hover:text-primary-400 hover:bg-primary-500/10"
+          ]}
+        >
+          <span>{category.titre}</span>
+          {category.count && (
+            <span class:list={[
+              "ml-2 inline-flex items-center px-2 py-0.5 rounded-full text-xs transition-colors duration-300",
+              currentCategory === category.slug
+                ? "bg-primary-500/20 text-primary-700 dark:text-primary-300"
+                : "bg-gray-100 text-gray-600 group-hover:bg-primary-500/20 group-hover:text-primary-700 dark:bg-gray-700 dark:text-gray-400 dark:group-hover:text-primary-300"
+            ]}>
+              {category.count}
+            </span>
+          )}
+        </a>
+      ))}
+    </div>
+  </div>
+</nav>
+
+<style>
+  @media (max-width: 640px) {
+    select {
+      background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+      background-position: right 0.5rem center;
+      background-repeat: no-repeat;
+      background-size: 1.5em 1.5em;
+      padding-right: 2.5rem;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+  }
+</style> 

@@ -1,79 +1,92 @@
 ---
-import { getCategories, getCategory, getArticle, getTopicsByCategory, getArticlesByTopic } from '../../../../lib/directus';
+import { getCategories, getCategory, getTopicsByCategory, getArticlesByTopic } from '../../../../lib/directus';
+import type { CategoryItem, ArticleItem } from '../../../../lib/directus';
 import type { GetStaticPaths } from 'astro';
 import Layout from '../../../../layouts/Layout.astro';
+import Header from '../../../../components/Header.astro';
+import Footer from '../../../../components/Footer.astro';
 import Breadcrumbs from '../../../../components/Breadcrumbs.astro';
+
+// Force le mode SSG
+export const prerender = true;
 
 export const getStaticPaths = (async () => {
   const categories = await getCategories();
   const paths = [];
 
   for (const category of categories) {
-    console.log(`Processing category: ${category.titre}`);
-    const topics = await getTopicsByCategory(category.id, category.slug);
+    const topics = await getTopicsByCategory(category.id);
     
     for (const topic of topics) {
-      console.log(`Processing topic: ${topic.titre}`);
-      const articles = await getArticlesByTopic(topic.id, category.slug);
+      const articles = await getArticlesByTopic(topic.id);
       
       for (const article of articles) {
-        console.log(`Processing article: ${article.titre}`);
-        const slug = article.url.split('/').pop();
         paths.push({
-          params: {
+          params: { 
             category: category.slug,
-            slug: slug
+            slug: article.url.split('/').pop()
           },
           props: { 
-            article: {
-              ...article,
-              topic: {
-                ...topic,
-                categorie: category
-              }
-            },
-            category 
+            category,
+            article 
           }
         });
       }
     }
   }
 
-  console.log(`Generated ${paths.length} paths`);
   return paths;
 }) satisfies GetStaticPaths;
 
-const { article, category } = Astro.props;
+interface Props {
+  category: CategoryItem;
+  article: ArticleItem;
+}
 
-// S'assurer que h2s est un tableau
-const h2s = Array.isArray(article.h2s) ? article.h2s : 
-            typeof article.h2s === 'string' ? JSON.parse(article.h2s) : 
-            [];
+const { category, article } = Astro.props;
 
+// Construction des breadcrumbs
 const breadcrumbs = [
   { label: 'Accueil', href: '/' },
   { label: 'Blog', href: '/blog' },
   { label: category.titre, href: `/blog/categories/${category.slug}` },
-  { label: article.titre, href: article.url }
+  { label: article.titre, href: `/blog/categories/${category.slug}/${article.url.split('/').pop()}`, current: true }
 ];
+
+// Conversion du contenu en tableau de paragraphes
+const paragraphs = article.contenu?.split('\n\n').filter((p: string) => p.trim()) || [];
+
+// Extraction des h2s pour la table des matières
+const h2s = article.contenu?.split('\n')
+  .filter(line => line.startsWith('## '))
+  .map(line => ({
+    title: line.replace('## ', ''),
+    id: line.replace('## ', '').toLowerCase().replace(/[^a-z0-9]+/g, '-')
+  })) || [];
 ---
 
 <Layout 
-  title={`${article.titre} | SEO Data-Driven`}
-  description={article.h1}
+  title={`${article.titre} | Blog HorizonReach`}
+  description={article.h1 || `${article.titre} - Guide pratique et analyses détaillées pour améliorer votre SEO.`}
 >
-  <main class="pt-24 pb-16">
-    <div class="container mx-auto px-4">
-      <Breadcrumbs items={breadcrumbs} />
+  <Header />
+
+  <main class="bg-black text-white">
+    <!-- Hero Section -->
+    <section class="relative min-h-[40vh] flex items-center">
+      <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-violet-900/20 via-black to-black"></div>
+      <div class="absolute inset-0" style="background: linear-gradient(to bottom right, rgba(139, 92, 246, 0.1) 0%, rgba(30, 64, 175, 0.1) 100%), url('/grid.svg');"></div>
       
-      <article class="max-w-4xl mx-auto">
-        <header class="mb-12">
-          <h1 class="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mt-8 mb-6">
-            {article.h1}
-          </h1>
+      <div class="container relative mx-auto px-4 py-24">
+        <div class="max-w-4xl">
+          <Breadcrumbs items={breadcrumbs} />
           
-          <div class="flex items-center gap-4 text-gray-600 dark:text-gray-400">
-            <div class="flex items-center">
+          <h1 class="text-4xl md:text-6xl font-bold mt-8 mb-6">
+            <span class="bg-gradient-to-r from-violet-500 via-blue-500 to-violet-500 bg-clip-text text-transparent">{article.titre}</span>
+          </h1>
+
+          <div class="flex items-center text-gray-400 mt-8">
+            <div class="flex items-center mr-6">
               <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
@@ -83,51 +96,54 @@ const breadcrumbs = [
               <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
               </svg>
-              <a href={`/blog/categories/${category.slug}`} class="hover:text-blue-600 dark:hover:text-blue-400">
-                {category.titre}
-              </a>
+              <span>{article.mot_cle}</span>
             </div>
           </div>
-        </header>
+        </div>
+      </div>
+    </section>
 
-        <div class="prose prose-lg dark:prose-invert max-w-none">
-          <!-- Table des matières -->
+    <!-- Article Content -->
+    <section class="py-32 relative overflow-hidden">
+      <div class="absolute inset-0 bg-gradient-to-b from-black via-violet-950/20 to-black"></div>
+      <div class="container relative mx-auto px-4">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+          <!-- Table of Contents -->
           {h2s.length > 0 && (
-            <div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-6 mb-8">
-              <h2 class="text-xl font-semibold mb-4">Table des matières</h2>
-              <ul class="space-y-2">
-                {h2s.map((h2: string) => (
-                  <li>
-                    <a
-                      href={`#${h2.toLowerCase().replace(/\s+/g, '-')}`}
-                      class="text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400"
+            <div class="lg:col-span-3">
+              <div class="sticky top-8">
+                <h2 class="text-xl font-bold mb-4">Table des matières</h2>
+                <nav class="space-y-2">
+                  {h2s.map(({ title, id }) => (
+                    <a 
+                      href={`#${id}`}
+                      class="block text-gray-400 hover:text-violet-400 transition-colors duration-300"
                     >
-                      {h2}
+                      {title}
                     </a>
-                  </li>
-                ))}
-              </ul>
+                  ))}
+                </nav>
+              </div>
             </div>
           )}
 
-          <!-- Contenu de l'article -->
-          <div class="space-y-8">
-            {h2s.length > 0 ? (
-              h2s.map((h2: string, index: number) => {
-                const sectionId = h2.toLowerCase().replace(/\s+/g, '-');
-                return (
-                  <section id={sectionId}>
-                    <h2 class="text-2xl font-bold mb-4">{h2}</h2>
-                    <div class="text-gray-600 dark:text-gray-300" set:html={article.contenu} />
-                  </section>
-                );
-              })
-            ) : (
-              <div class="text-gray-600 dark:text-gray-300" set:html={article.contenu} />
-            )}
-          </div>
+          <!-- Article -->
+          <article class={`prose prose-invert prose-violet max-w-none ${h2s.length > 0 ? 'lg:col-span-9' : 'lg:col-span-8 lg:col-start-3'}`}>
+            <div class="space-y-6">
+              {paragraphs.map((paragraph: string) => {
+                if (paragraph.startsWith('## ')) {
+                  const title = paragraph.replace('## ', '');
+                  const id = title.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+                  return <h2 id={id} class="text-3xl font-bold mt-12 mb-6">{title}</h2>;
+                }
+                return <p class="text-gray-300 leading-relaxed">{paragraph}</p>;
+              })}
+            </div>
+          </article>
         </div>
-      </article>
-    </div>
+      </div>
+    </section>
   </main>
+
+  <Footer />
 </Layout> 

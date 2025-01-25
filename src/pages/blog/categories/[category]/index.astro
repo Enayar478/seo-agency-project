@@ -8,65 +8,38 @@ import Layout from '../../../../layouts/Layout.astro';
 import Header from '../../../../components/Header.astro';
 import Footer from '../../../../components/Footer.astro';
 import Breadcrumbs from '../../../../components/Breadcrumbs.astro';
-import BlogCard from '../../../../components/BlogCard.astro';
 
 // Force le mode SSG
 export const prerender = true;
 
-// Génération des routes statiques
-export async function getStaticPaths() {
-  console.log('🚀 Début de getStaticPaths');
+export const getStaticPaths = (async () => {
+  const categories = await getCategories();
   
-  try {
-    const categories = await getCategories();
-    console.log(`📂 ${categories.length} catégories trouvées`);
+  return categories.map(category => ({
+    params: { category: category.slug },
+    props: { category }
+  }));
+}) satisfies GetStaticPaths;
 
-    return categories.map(category => {
-      console.log(`🛠 Génération de la route pour ${category.titre}`);
-      return {
-        params: { category: category.slug },
-        props: { categoryData: category }
-      };
-    });
-  } catch (error) {
-    console.error('❌ Erreur dans getStaticPaths:', error);
-    return [];
-  }
-}
-
-// Récupération des données de la page
-const { categoryData } = Astro.props;
-console.log('📦 Données de catégorie reçues:', JSON.stringify(categoryData, null, 2));
-
-// Vérification de sécurité
-if (!categoryData?.id) {
-  console.error('❌ Données de catégorie invalides:', JSON.stringify(categoryData, null, 2));
-  return new Response('Catégorie non trouvée', {
-    status: 404,
-    statusText: 'Not Found'
-  });
-}
+const { category } = Astro.props;
 
 // Récupération des topics et articles
-const topics = await getTopicsByCategory(categoryData.id);
-console.log('📚 Topics trouvés:', topics.length);
-
-const articlesPromises = topics.map(topic => getArticlesByTopic(topic.id, categoryData.slug));
+const topics = await getTopicsByCategory(category.id);
+const articlesPromises = topics.map(topic => getArticlesByTopic(topic.id));
 const articlesArrays = await Promise.all(articlesPromises);
 const articles = articlesArrays.flat();
-console.log('📄 Articles trouvés:', articles.length);
 
 // Construction des breadcrumbs
 const breadcrumbs = [
   { label: 'Accueil', href: '/' },
   { label: 'Blog', href: '/blog' },
-  { label: categoryData.titre, href: `/blog/categories/${categoryData.slug}`, current: true }
+  { label: category.titre, href: `/blog/categories/${category.slug}`, current: true }
 ];
 ---
 
 <Layout 
-  title={`${categoryData.titre} | Blog HorizonReach`}
-  description={`Découvrez nos articles sur ${categoryData.titre}. Guides pratiques et analyses détaillées pour améliorer votre SEO.`}
+  title={`${category.titre} | Blog HorizonReach`}
+  description={`Découvrez nos articles sur ${category.titre}. Guides pratiques et analyses détaillées pour améliorer votre SEO.`}
 >
   <Header />
 
@@ -82,34 +55,35 @@ const breadcrumbs = [
           
           <h1 class="text-4xl md:text-6xl font-bold mt-8 mb-6">
             <span class="block">Articles sur</span>
-            <span class="bg-gradient-to-r from-violet-500 via-blue-500 to-violet-500 bg-clip-text text-transparent">{categoryData.titre}</span>
+            <span class="bg-gradient-to-r from-violet-500 via-blue-500 to-violet-500 bg-clip-text text-transparent">{category.titre}</span>
           </h1>
-          
-          <p class="text-xl text-gray-300 mb-8">
-            {categoryData.description}
-          </p>
         </div>
       </div>
     </section>
 
-    <!-- Topics Section -->
+    <!-- Articles Section -->
     <section class="py-32 relative overflow-hidden">
       <div class="absolute inset-0 bg-gradient-to-b from-black via-violet-950/20 to-black"></div>
       <div class="container relative mx-auto px-4">
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {topics.map((topic) => (
+          {articles.map((article) => (
             <div class="relative group">
               <div class="absolute inset-0 bg-gradient-to-r from-violet-600/50 to-blue-600/50 rounded-2xl blur-xl transition-all duration-300 group-hover:blur-2xl opacity-0 group-hover:opacity-100"></div>
               <a
-                href={topic.url}
+                href={`/blog/categories/${category.slug}/${article.url.split('/').pop()}`}
                 class="block relative p-8 rounded-2xl bg-gray-900/50 border border-violet-500/20 hover:border-violet-500/50 transition-all duration-300"
               >
                 <h3 class="text-xl font-bold mb-4 bg-gradient-to-r from-violet-400 to-blue-400 bg-clip-text text-transparent">
-                  {topic.titre}
+                  {article.titre}
                 </h3>
-                <p class="text-gray-400 mb-6">{topic.mot_cle_principal}</p>
+                <div class="flex items-center text-gray-400 mb-6">
+                  <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                  <span>{article.temps_lecture} min de lecture</span>
+                </div>
                 <div class="flex items-center text-violet-400 group-hover:text-violet-300 transition-colors duration-300">
-                  <span>Lire les articles</span>
+                  <span>Lire l'article</span>
                   <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2 transform group-hover:translate-x-1 transition-transform duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
                   </svg>
